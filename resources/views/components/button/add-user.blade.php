@@ -1,3 +1,6 @@
+<div>
+    <!-- Act only according to that maxim whereby you can, at the same time, will that it should become a universal law. - Immanuel Kant -->
+</div>
 <dialog id="modalAddUser" class="pb-5 max-w-96 pt-2 px-2 md:px-4 rounded-md w-full border border-black">
     <div class="w-full flex flex-col">
         <button class="w-8 h-8 ml-auto" @click="modalAddUser.close()"><x-icons.close /></button>

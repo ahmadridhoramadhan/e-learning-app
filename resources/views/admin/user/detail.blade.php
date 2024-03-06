@@ -18,7 +18,7 @@
                 <p class="truncate">{{ $student->password }}</p>
             </div>
 
-            <x-button.edituser :$student />
+            <x-button.edit-user :$student />
         </div>
         {{-- statistik --}}
         <div class="flex justify-between gap-1 mt-1 mx-1 md:mx-0">

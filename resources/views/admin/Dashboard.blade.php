@@ -9,7 +9,7 @@
             @endforeach
         </div>
         <div class="ml-auto">
-            <x-button.seemore :href="route('admin.rooms')" />
+            <x-button.see-more :href="route('admin.rooms')" />
         </div>
     </section>
 
@@ -24,7 +24,7 @@
             @if (isset($class->name))
                 <div class="flex flex-col gap-3" x-init>
                     {{-- button tambah siswa --}}
-                    <x-button.adduser />
+                    <x-button.add-user />
 
                     {{-- list siswa --}}
                     @forelse ($students as $student)
@@ -37,7 +37,7 @@
 
                     {{-- button selengkapnya --}}
                     <div class="ml-auto">
-                        <x-button.seemore :href="route('admin.users')" />
+                        <x-button.see-more :href="route('admin.users')" />
                     </div>
                 </div>
             @else

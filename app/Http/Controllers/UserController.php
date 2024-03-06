@@ -221,6 +221,4 @@ class UserController extends Controller
             'room' => $room,
         ]);
     }
-
-    // progres ada sedikit masalah dan ketika max time harus di tambahkan ke progress
 }
