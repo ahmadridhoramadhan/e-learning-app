@@ -1,6 +1,6 @@
 {{-- card siswa --}}
 <a href="{{ route('admin.users.detail', $student->id) }}"
-    class="flex items-center gap-3 border-2 border-gray-300 px-1 py-2 hover:bg-slate-200 transition-all hover:border-black">
+    class="flex items-center gap-3 border-2 border-gray-300 px-1 py-2 hover:bg-slate-200 dark:hover:bg-slate-800 dark:border-gray-700 dark:hover:border-gray-300 transition-all hover:border-black">
     <div class="w-7 h-7 shrink-0 ml-3">
         <x-icons.person />
     </div>

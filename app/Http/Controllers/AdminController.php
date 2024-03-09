@@ -9,7 +9,7 @@ class AdminController extends Controller
     public function dashboardPage(Request $request)
     {
         $user = auth()->user();
-        $rooms = $user->rooms()->take(6)->get();
+        $rooms = $user->rooms->take(6);
 
         // cek apkah userClass ada atau tidak
         if (!$user->userClass) {
