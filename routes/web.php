@@ -41,13 +41,14 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::prefix('users')->group(function () {
         Route::get('/', [UserClassController::class, 'index'])->name('admin.users');
         Route::get('/{user}', [UserClassController::class, 'detail'])->name('admin.users.detail');
-        Route::post('/create', [UserClassController::class, 'createStudent'])->name('admin.users.create.process');
-        Route::post('/create/file', [UserClassController::class, 'createStudentWithFile'])->name('admin.users.create.file.process');
+        Route::post('/create/{classroom}', [UserClassController::class, 'createStudent'])->name('admin.users.create.process');
+        Route::post('/create/file/{classroom}', [UserClassController::class, 'createStudentWithFile'])->name('admin.users.create.file.process');
         Route::post('/edit/{user}', [UserClassController::class, 'editStudent'])->name('admin.users.edit.process');
         Route::delete('/{user}', [UserClassController::class, 'deleteStudent'])->name('admin.users.delete.process');
         Route::put('/{user}', [UserClassController::class, 'resetStudent'])->name('admin.users.reset.process');
         Route::post('/class/create', [UserClassController::class, 'createClass'])->name('admin.class.create.process');
-        Route::post('/class/edit', [UserClassController::class, 'EditClass'])->name('admin.class.edit.process');
+        Route::delete('/class/delete/{classroom}', [UserClassController::class, 'deleteClass'])->name('admin.class.delete.process');
+        Route::post('/class/edit/{classroom}', [UserClassController::class, 'EditClass'])->name('admin.class.edit.process');
     });
 });
 
@@ -63,6 +64,8 @@ Route::middleware(['auth'])->prefix('user')->group(function () {
         Route::get('/leaderBoard/{room}', [UserController::class, 'listAll'])->name('user.room.leaderBoard');
     });
 
+    Route::get('/histories', [UserController::class, 'historiesPage'])->name('user.histories');
+    Route::get('/invitations', [UserController::class, 'invitationsPage'])->name('user.invitations');
     Route::get('/search', [UserController::class, 'ListTeachersAndRooms'])->name('user.room.search');
 });
 

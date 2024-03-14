@@ -221,4 +221,26 @@ class UserController extends Controller
             'room' => $room,
         ]);
     }
+
+    public function invitationsPage()
+    {
+
+        return view('user.notifications');
+    }
+
+    public function historiesPage()
+    {
+        $user = auth()->user();
+        $assessmentHistories = $user->assessmentHistories ? $user->assessmentHistories->sortByDesc('created_at') : collect([]);
+        $totalAlreadyDone = $assessmentHistories->count();
+        // ambil rata rata score dengan maksimal 2 angka di belakang koma
+        $averageScore = $assessmentHistories->avg('score') ? number_format($assessmentHistories->avg('score'), 2) : 0;
+
+        return view('user.histories', [
+            'student' => $user,
+            'assessmentHistories' => $assessmentHistories,
+            'totalAlreadyDone' => $totalAlreadyDone,
+            'averageScore' => $averageScore,
+        ]);
+    }
 }

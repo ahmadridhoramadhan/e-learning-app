@@ -20,49 +20,23 @@
 
     </section>
 
-    {{-- top 5 students --}}
-    <section class="mb-16 mt-32 mx-auto xl:max-w-screen-xl">
-        <div class="relative rounded-md shadow-md p-2 mt-5 pt-6">
-            <div
-                class="border-2 border-cyan-600 bg-cyan-100 dark:bg-cyan-900 absolute whitespace-nowrap -top-7 font-semibold text-xl px-4 py-2 rounded left-[50%] transform -translate-x-1/2">
-                {{ $class->name ?? '? ? ?' }}
-            </div>
-
-            @if (isset($class->name))
-                <div class="flex flex-col gap-3" x-init>
-                    {{-- button tambah siswa --}}
-                    <x-button.add-user />
-
-                    {{-- list siswa --}}
-                    @forelse ($students as $student)
-                        <x-cards.user :$student />
-                    @empty
-                        <div class="text-xl flex items-center justify-center font-bold text-gray-500">
-                            Tidak ada siswa
-                        </div>
-                    @endforelse
-
-                    {{-- button selengkapnya --}}
-                    <div class="ml-auto">
-                        <x-button.see-more :href="route('admin.users')" />
-                    </div>
+    <section class="mb-16 mt-32 dark:bg-slate-800 rounded-md bg-gray-100 shadow dark:shadow-slate-500 py-5 px-3">
+        <h3 class="text-center mb-10 mt-6 text-3xl">Kelas Anda</h3>
+        <div class="grid xl:grid-cols-2 gap-5">
+            @foreach ($classrooms as $classroom)
+                <div
+                    class="w-full bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 h-full">
+                    <a href="{{ route('admin.users') }}" class="flex flex-col items-center py-5">
+                        <h5 class="mb-1 text-4xl font-semibold text-center text-gray-900 dark:text-white line-clamp-2">
+                            {{ $classroom->name }}
+                        </h5>
+                        <span class="text-sm text-gray-500 w-full text-center dark:text-gray-400 truncate"><span
+                                class="underline text-base">{{ $classroom->students->count() }}</span>
+                            siswa</span>
+                    </a>
                 </div>
-            @else
-                <div class="flex flex-col gap-3">
-                    <div class="text-center">
-                        <h2 class="text-2xl">Anda tidak mempunyai kelas</h2>
-                        <form action="{{ route('admin.class.create.process') }}" method="post">
-                            @csrf
-                            <input type="text" name="name" id="name"
-                                class="border-2 border-cyan-600 bg-cyan-100 py-1 text-center mt-4 rounded-md shadow-md"
-                                placeholder="nama kelas">
-                            <button
-                                class=" px-4 py-1 mt-2 rounded-md shadow-md bg-black text-white hover:bg-gray-800 transition-all"
-                                type="submit">Buat</button>
-                        </form>
-                    </div>
-                </div>
-            @endif
+            @endforeach
         </div>
     </section>
+
 </x-app-layout>

@@ -1,5 +1,5 @@
 <x-app-layout :class="'flex-auto'">
-    <section x-data="{
+    {{-- <section x-data="{
         autoBreakLine: function(sentence) {
             return sentence.split(' ').join('<br>');
         },
@@ -8,19 +8,19 @@
             x-html="autoBreakLine('{{ $student->name }}');"></h1>
         <div class="bg-black text-white relative">
             <div class="container mx-auto pl-6 py-10 flex flex-col gap-7">
-                {{-- email --}}
+                <!--email -->
                 <div class="flex gap-2 items-center">
                     <div class="w-7 h-7 shrink-0"><x-icons.email /></div>
                     <p class="truncate">{{ $student->email }}</p>
                 </div>
-                {{-- password --}}
+                <!-- password -->
                 <div class="flex gap-2 items-center">
                     <div class="w-7 h-7 shrink-0"><x-icons.padlock /></div>
                     <p class="truncate">{{ $student->password }}</p>
                 </div>
             </div>
         </div>
-        {{-- statistik --}}
+        <!-- statistik -->
         <div class="grid grid-cols-3 gap-1 mt-1 container mx-auto">
             <div class="border-2 border-black flex flex-col flex-auto items-center pt-2 shrink-0">
                 <p>nilai rata rata</p>
@@ -35,7 +35,25 @@
                 <p class="text-2xl font-bold flex items-center h-full py-4">99.5</p>
             </div>
         </div>
-    </section>
+    </section> --}}
+
+    <div class="grid grid-cols-3 gap-5">
+        <div
+            class="dark:bg-slate-800 gap-3 flex justify-center items-center flex-col rounded-md shadow dark:shadow-slate-600 py-5">
+            <span>Nilai Rata Rata</span>
+            <span class="text-3xl">{{ $averageScore }}</span>
+        </div>
+        <div
+            class="dark:bg-slate-800 gap-3 flex justify-center items-center flex-col rounded-md shadow dark:shadow-slate-600 py-5">
+            <span>Room di kerjakan</span>
+            <span class="text-3xl">{{ $totalAlreadyDone }}</span>
+        </div>
+        <div
+            class="dark:bg-slate-800 gap-3 flex justify-center items-center flex-col rounded-md shadow dark:shadow-slate-600 py-5">
+            <span>dikeluarkan dari room</span>
+            <span class="text-3xl">90</span>
+        </div>
+    </div>
 
     <div class="container mx-auto">
 

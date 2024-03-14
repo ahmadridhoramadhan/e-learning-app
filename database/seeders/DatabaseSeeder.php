@@ -21,14 +21,14 @@ class DatabaseSeeder extends Seeder
             'password' => 'password',
         ]);
 
-        \App\Models\UserClass::create([
+        \App\Models\classRoom::create([
             'name' => 'XII RPL 1',
             'admin_id' => 1,
         ]);
 
         \App\Models\User::create([
             'name' => 'siswa',
-            'user_class_id' => 1,
+            'class_room_id' => 1,
             'email' => 'ahmadridhor02@gmail.com',
             'is_admin' => false,
             'password' => 'password',

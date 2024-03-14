@@ -60,8 +60,15 @@ class authController extends Controller
 
         $userModel = User::where('email', $user->email)->first();
 
+
         if (!$userModel) {
             return redirect()->route('login');
+        }
+
+        // add profile picture if not exist
+        if (!$userModel->profile_picture_url) {
+            $userModel->profile_picture_url = $user->avatar;
+            $userModel->save();
         }
 
         Auth::login($userModel);

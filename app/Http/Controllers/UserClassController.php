@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\classRoom;
 use App\Models\User;
 use App\Models\UserClass;
 use Illuminate\Http\Request;
@@ -12,9 +13,7 @@ class UserClassController extends Controller
     public function index()
     {
         $user = auth()->user();
-        $students = $user->userClass->users;
-
-        return view('admin.user.listAll', ['students' => $students, 'class' => $user->userClass]);
+        return view('admin.user.listAll', ['classrooms' => $user->userClass]);
     }
 
     public function createClass(Request $request)
@@ -23,28 +22,37 @@ class UserClassController extends Controller
             'name' => 'required'
         ]);
 
-        $userClass = new UserClass();
-        $userClass->name = $request->name;
-        $userClass->admin_id = auth()->user()->id;
-        $userClass->save();
+        $classroom = new classRoom();
+        $classroom->name = $request->name;
+        $classroom->admin_id = auth()->user()->id;
+        $classroom->save();
 
         return redirect()->route('admin.users');
     }
 
-    public function editClass(Request $request)
+    public function editClass(Request $request, classRoom $classroom)
     {
         $request->validate([
             'name' => 'required'
         ]);
 
-        $userClass = auth()->user()->userClass;
-        $userClass->name = $request->name;
-        $userClass->save();
+        $classroom->name = $request->name;
+        $classroom->save();
 
         return redirect()->route('admin.users');
     }
 
-    public function createStudent(Request $request)
+    public function deleteClass(Request $request, classRoom $classroom)
+    {
+        $students = $classroom->students;
+        foreach ($students as $student) {
+            $student->delete();
+        }
+        $classroom->delete();
+        return redirect()->route('admin.users');
+    }
+
+    public function createStudent(Request $request, classRoom $classroom)
     {
         $request->validate([
             'name' => 'required',
@@ -57,12 +65,37 @@ class UserClassController extends Controller
 
         // create user
         $user = new User();
-        $user->user_class_id = auth()->user()->userClass->id;
+        $user->class_room_id = $classroom->id;
         $user->name = $request->name;
         $user->email = $request->email;
         $user->password = ($password);
         $user->is_admin = false;
         $user->save();
+
+        return redirect()->route('admin.users');
+    }
+
+    public function createStudentWithFile(Request $request, classRoom $classroom)
+    {
+        $request->validate([
+            'file' => 'required|mimes:csv,txt'
+        ]);
+
+        $file = $request->file('file');
+        $file = file($file->getRealPath());
+        $data = array_map('str_getcsv', $file);
+        $header = array_shift($data);
+
+        foreach ($data as $row) {
+            $row = array_combine($header, $row);
+            $user = new User();
+            $user->class_room_id = $classroom->id;
+            $user->name = $row['name'];
+            $user->email = $row['email'];
+            $user->password = bcrypt($row['password']) ?? substr(md5(rand()), 0, 8);
+            $user->is_admin = false;
+            $user->save();
+        }
 
         return redirect()->route('admin.users');
     }
@@ -93,11 +126,12 @@ class UserClassController extends Controller
 
         $user->name = $request->name;
         $user->email = $request->email;
-        if ($request->password) {
-            $user->password = bcrypt($request->password);
-        }
+
+        $user->password = $request->password ?? substr(md5(rand()), 0, 8);
+
         $user->save();
 
+        // TODO: pertingbangkan menggunakan redirect back
         return redirect()->route('admin.users.detail', ['user' => $user]);
     }
 
@@ -110,31 +144,6 @@ class UserClassController extends Controller
     public function resetStudent(User $user)
     {
         $user->assessmentHistories()->delete();
-        return redirect()->route('admin.users');
-    }
-
-    public function createStudentWithFile(Request $request)
-    {
-        $request->validate([
-            'file' => 'required|mimes:csv,txt'
-        ]);
-
-        $file = $request->file('file');
-        $file = file($file->getRealPath());
-        $data = array_map('str_getcsv', $file);
-        $header = array_shift($data);
-
-        foreach ($data as $row) {
-            $row = array_combine($header, $row);
-            $user = new User();
-            $user->user_class_id = auth()->user()->userClass->id;
-            $user->name = $row['name'];
-            $user->email = $row['email'];
-            $user->password = bcrypt($row['password']) ?? substr(md5(rand()), 0, 8);
-            $user->is_admin = false;
-            $user->save();
-        }
-
         return redirect()->route('admin.users');
     }
 }

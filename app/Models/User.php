@@ -51,9 +51,13 @@ class User extends Authenticatable
         return $this->hasMany(Room::class);
     }
 
-    public function UserClass(): HasOne
+    public function UserClass(): HasMany
     {
-        return $this->hasOne(UserClass::class, 'admin_id');
+        return $this->hasMany(classRoom::class, 'admin_id');
+    }
+    public function classRooms(): HasMany
+    {
+        return $this->hasMany(classRoom::class, 'admin_id');
     }
 
     public function progress(): HasOne

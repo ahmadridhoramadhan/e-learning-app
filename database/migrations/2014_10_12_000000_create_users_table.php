@@ -14,8 +14,9 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->text('profile_picture_url')->nullable();
             $table->boolean('is_admin')->default(false);
-            $table->foreignId('user_class_id')->nullable();
+            $table->foreignId('class_room_id')->nullable();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->nullable();
