@@ -17,9 +17,22 @@ class RoomAuth
      */
     public function handle($request, Closure $next)
     {
-        if (!(Hash::check(Room::find($request->route('room'))->first()->password, $request->session()->get('room_password')))) {
+        // check password
+        $room = $request->route('room');
+        if (!(Room::find($room)->first()->password == $request->session()->get('room_password'))) {
+            return redirect()->route('user.room.detail', $room->id)->with('error', 'Password salah');
+        }
 
-            return redirect('user.room.detail', $request->route('room')->id)->with('error', 'Password salah');
+        // check user warning exist
+        if (auth()->user()->warningExist($room->id)) {
+            return redirect()->route('user.room.detail', $room->id)->with('error', 'Anda tidak bisa masuk karena ada warning');
+        }
+
+        $user = auth()->user();
+        if (!json_decode($room->settings)->answer_again) {
+            if ($user->assessmentHistories->where('room_id', $room->id)->first()) {
+                return redirect()->route('user.room.detail', $room->id)->with('error', 'Anda sudah pernah mengerjakan soal ini');
+            }
         }
 
         return $next($request);

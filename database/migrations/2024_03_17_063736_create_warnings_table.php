@@ -11,14 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('activities', function (Blueprint $table) {
+        Schema::create('warnings', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->text('description');
-            $table->string('type');
-            $table->string('status');
-            $table->foreignId('room_id')->constrained('rooms')->nullable();
-            $table->foreignId('user_id')->constrained('users');
+            $table->foreignId('from')->constrained('users');
+            $table->foreignId('to')->constrained('users');
+            $table->foreignId('room_id')->constrained('rooms');
+            $table->string('message');
+            $table->enum('status', ['pending', 'declined'])->default('pending');
             $table->timestamps();
         });
     }
@@ -28,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('activities');
+        Schema::dropIfExists('warnings');
     }
 };

@@ -1,13 +1,14 @@
-<x-editor-layout :title="$room->name" :questions="$room->questions">
+<x-editor-layout :title="$room->name" :questions="$room->questions" :roomId="$room->id" :room="$room">
 
-    <x-alert.success :title="'hai'" :message="'cuma ngetes'" />
+    <div class="absolute top-2 left-0 right-0" id="alert">
 
-    <div class="flex flex-col justify-between min-h-[93vh]" x-data="{ openEditor: false }">
+    </div>
+
+    <div class="flex flex-col justify-between" x-data="{ openEditor: false }">
         <div class="flex flex-col gap-3">
-
             {{-- question --}}
             <div>
-                <div class="border border-black rounded-md shadow-md w-fit py-1 px-5 text-xl mb-1"
+                <div class="border border-indigo-800 dark:border-indigo-500 rounded-md shadow-md w-fit py-1 px-5 text-xl mb-1"
                     x-text="currentIndex +1"></div>
                 <div class="question editor border-indigo-500 border rounded shadow-md p-2 min-h-48 resize-y overflow-auto break-all"
                     @click="renderSummernote($event.target)" x-html="questions[currentIndex].question">
@@ -16,14 +17,14 @@
 
 
             {{-- correct answers --}}
-            <div class="answer editor border-black border rounded-lg shadow-md p-2 pl-3 min-h-10 bg-cyan-100"
+            <div class="answer editor border-black border rounded-lg shadow-md p-2 pl-3 min-h-10 bg-cyan-100 dark:bg-cyan-800 dark:border-cyan-500"
                 @click="renderSummernote($event.target)" x-html="questions[currentIndex].answers[0]">
             </div>
             {{-- wrong answers / another answer --}}
             <template class="flex flex-col gap-3" x-for="(answer, index) in questions[currentIndex].answers">
                 <template x-if="index > 0"> {{-- tidak menampilkan yang pertama --}}
                     <div class="relative">
-                        <div class="answer editor border-black border rounded-lg shadow-md p-2 pl-3 min-h-10"
+                        <div class="answer editor border-black border rounded-lg shadow-md p-2 pl-3 min-h-10 dark:border-white"
                             @click="renderSummernote($event.target)" x-html="answer">
                         </div>
 
@@ -34,6 +35,7 @@
                     </div>
                 </template>
             </template>
+
             {{-- container add answer --}}
             <div id="container-answers" class="flex gap-3 flex-col"
                 x-effect="currentIndex;
@@ -45,42 +47,9 @@
 
             {{-- add answer --}}
             <button type="button" @click="addAnswer()" id="add-answer"
-                class="rounded-xl shadow-md flex h-10 w-20 p-2 border border-black">
+                class="rounded-xl shadow-md flex h-10 w-20 p-2 border border-black dark:border-white">
                 <x-icons.plus />
             </button>
-        </div>
-
-        <div>
-            <div class="flex justify-between my-6 items-center">
-                {{-- prev --}}
-                <button type="button" @click="save(currentIndex); getSession(); currentIndex--; "
-                    :disabled="currentIndex <= 0" :class="(currentIndex <= 0 ? ' opacity-20' : '')"
-                    class="'w-10 h-10 rotate-90 flex justify-center items-center rounded-full border border-gray-700">
-                    <x-icons.chevron />
-                </button>
-
-                {{-- trash --}}
-                <button type="button" class="border-red-500 border w-11 h-11  rounded-md shadow-md p-2 text-red-700"
-                    @click="questions.splice(currentIndex, 1);
-                    if(currentIndex >= questions.length){currentIndex--};
-                    storeSession();">
-                    <x-icons.trash />
-                </button>
-
-                {{-- add question --}}
-                <button type="button" class="p-1 border w-10 h-10 border-black rounded-full shadow-md bg-cyan-300"
-                    @click="save(currentIndex); getSession(); addQuestion();">
-                    <x-icons.plus />
-                </button>
-
-                {{-- next --}}
-                <button type="button" @click="save(currentIndex); getSession(); currentIndex++;"
-                    x-show="currentIndex <= questions.length - 2"
-                    class="w-10 h-10 -rotate-90 flex justify-center items-center rounded-full border border-gray-700">
-                    <x-icons.chevron />
-                </button>
-            </div>
-
         </div>
     </div>
 </x-editor-layout>

@@ -131,8 +131,8 @@ class UserClassController extends Controller
 
         $user->save();
 
-        // TODO: pertingbangkan menggunakan redirect back
-        return redirect()->route('admin.users.detail', ['user' => $user]);
+        // return redirect()->route('admin.users.detail', ['user' => $user]);
+        return redirect()->back();
     }
 
     public function deleteStudent(User $user)

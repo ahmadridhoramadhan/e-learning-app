@@ -69,4 +69,34 @@ class User extends Authenticatable
     {
         return $this->hasMany(AssessmentHistory::class);
     }
+
+    public function invited(): HasMany
+    {
+        return $this->hasMany(Invitation::class, 'to');
+    }
+
+    public function invitations(): HasMany
+    {
+        return $this->hasMany(Invitation::class, 'from');
+    }
+
+    public function fromClassroom(): BelongsTo
+    {
+        return $this->belongsTo(classRoom::class, 'class_room_id');
+    }
+
+    public function warnings(): HasMany
+    {
+        return $this->hasMany(Warning::class, 'from');
+    }
+
+    public function scopeWarningExist($query, $room_id)
+    {
+        return ($this->warnings->where('room_id', $room_id)->first() !== null);
+    }
+
+    public function StudentWarnings()
+    {
+        return $this->hasMany(Warning::class, 'to');
+    }
 }

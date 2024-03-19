@@ -2,9 +2,11 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\authController;
+use App\Http\Controllers\InvitationController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\UserClassController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\WarningController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -32,7 +34,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
         Route::delete('/reset/questions/{room}', [RoomController::class, 'resetQuestions'])->name('admin.rooms.questions.reset.process');
         Route::put('/close/{room}', [RoomController::class, 'closeOrOpen'])->name('admin.rooms.closeOrOpen.process');
         Route::get('/edit/{room}', [RoomController::class, 'edit'])->name('admin.rooms.edit');
-        Route::get('/{room}', [RoomController::class, 'detailPage'])->name('admin.rooms.detail');
+        Route::get('/{room}', [RoomController::class, 'detailRoomPage'])->name('admin.rooms.detail');
         Route::get('/settings/{room}', [RoomController::class, 'settingsPage'])->name('admin.rooms.settings');
         Route::post('/settings/{room}', [RoomController::class, 'settings'])->name('admin.rooms.settings.process');
     });
@@ -50,6 +52,14 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
         Route::delete('/class/delete/{classroom}', [UserClassController::class, 'deleteClass'])->name('admin.class.delete.process');
         Route::post('/class/edit/{classroom}', [UserClassController::class, 'EditClass'])->name('admin.class.edit.process');
     });
+
+    Route::put('warning/accept/{warning}', [WarningController::class, 'acceptWarning'])->name('admin.student.warning.accept');
+    Route::put('warning/pending/{warning}', [WarningController::class, 'pendingWarning'])->name('admin.student.warning.pending');
+    Route::put('warning/decline/{warning}', [WarningController::class, 'declineWarning'])->name('admin.student.warning.decline');
+
+    Route::get('/invite/classroom/{room}/{classroom?}', 'App\Http\Controllers\InvitationController@inviteClassroomPage')->name('admin.invite.classroom');
+    Route::post('/invite/classroom/{room}/{classroom?}/process', 'App\Http\Controllers\InvitationController@inviteClassroomProcess')->name('admin.invite.classroom.process');
+    Route::delete('/invite/classroom/{room}/{classroom?}/delete/process', 'App\Http\Controllers\InvitationController@deleteInviteClassroomProcess')->name('admin.invite.classroom.delete.process');
 });
 
 // user
@@ -59,19 +69,20 @@ Route::middleware(['auth'])->prefix('user')->group(function () {
     Route::prefix('rooms')->group(function () {
         Route::get('/detail/{room}/{assessmentHistory?}', [UserController::class, 'roomDetail'])->name('user.room.detail');
         Route::post('/join/{room}', [UserController::class, 'joinRoom'])->name('user.room.join.process');
-        Route::get('/join/{room}', [UserController::class, 'joinRoomPage'])->name('user.room.join');
+        Route::get('/join/{room}', [UserController::class, 'joinRoomPage'])->name('user.room.join')->middleware('room.auth');
         Route::post('/submit/{room}', [UserController::class, 'submitRoom'])->name('user.room.submit');
-        Route::get('/leaderBoard/{room}', [UserController::class, 'listAll'])->name('user.room.leaderBoard');
+        Route::get('/leaderBoard/{room}', [UserController::class, 'listAllScore'])->name('user.room.leaderBoard');
     });
 
+    Route::get('/invitations', [InvitationController::class, 'index'])->name('user.invitations');
     Route::get('/histories', [UserController::class, 'historiesPage'])->name('user.histories');
-    Route::get('/invitations', [UserController::class, 'invitationsPage'])->name('user.invitations');
     Route::get('/search', [UserController::class, 'ListTeachersAndRooms'])->name('user.room.search');
 });
 
 Route::get('/', function () {
     return view('home');
 })->middleware('auth');
+
 
 Route::get('/login', [authController::class, 'index'])->name('login');
 Route::post('/login', [authController::class, 'manualLogin'])->name('login.process');

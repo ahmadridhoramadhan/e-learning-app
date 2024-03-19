@@ -9,6 +9,5 @@
                 <x-cards.room :room="$room" />
             @endforeach
         </div>
-
     </section>
 </x-app-layout>

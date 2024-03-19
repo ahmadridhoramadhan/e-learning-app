@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Answer;
+use App\Models\invitation;
 use App\Models\Room;
 use Illuminate\Http\Request;
 
@@ -11,14 +12,14 @@ class RoomController extends Controller
     public function index(Request $request)
     {
         $user = auth()->user();
-        $rooms = $user->rooms()->get();
+        $rooms = $user->rooms()->get()->sortByDesc('created_at');
 
         return view('admin.room.index', [
             'rooms' => $rooms,
         ]);
     }
 
-    public function detailPage(Request $request, Room $room)
+    public function detailRoomPage(Request $request, Room $room)
     {
         // init
         $assessmentHistories = collect([]);
@@ -40,11 +41,21 @@ class RoomController extends Controller
             $totalParticipant = $room->assessmentHistories->count();
         }
 
+        // ambil kelas apa saja yang di undang
+        $invitations = invitation::where('room_id', $room->id)->where('status', 'pending')->get();
+        $invitedClassrooms = collect([]);
+        foreach ($invitations as $invitedClassroom) {
+            $invitedClassrooms[] = $invitedClassroom->toUser->fromClassroom;
+        }
+        $invitedClassrooms = $invitedClassrooms->unique();
+
         return view('admin.room.detail', [
             'room' => $room,
             'assessmentHistories' => $assessmentHistories,
             'averageScore' => $averageScore,
             'totalParticipant' => $totalParticipant,
+            'totalQuestion' => $room->questions->count(),
+            'invitedClassrooms' => $invitedClassrooms,
         ]);
     }
 
@@ -57,6 +68,7 @@ class RoomController extends Controller
 
     public function settings(Request $request, Room $room)
     {
+        dd($request->all());
         $validated = $request->validate([
             'name' => 'required',
             'password' => 'min:5|nullable',
@@ -67,6 +79,7 @@ class RoomController extends Controller
             'average_score' => 'boolean|nullable',
             'answer_history' => 'boolean|nullable',
             'list_score_user' => 'boolean|nullable',
+            'focus' => 'boolean|nullable',
         ]);
 
         $settings = collect([
@@ -77,6 +90,7 @@ class RoomController extends Controller
             'average_score' => isset($validated['average_score']),
             'answer_history' => isset($validated['answer_history']),
             'list_score_user' => isset($validated['list_score_user']),
+            'focus' => isset($validated['focus']),
         ]);
 
         $room->settings = $settings->toJson();
@@ -104,6 +118,7 @@ class RoomController extends Controller
             'average_score' => 'boolean|nullable',
             'answer_history' => 'boolean|nullable',
             'list_score_user' => 'boolean|nullable',
+            'focus' => 'boolean|nullable',
         ]);
 
 
@@ -118,6 +133,7 @@ class RoomController extends Controller
             'average_score' => isset($validated['average_score']),
             'answer_history' => isset($validated['answer_history']),
             'list_score_user' => isset($validated['list_score_user']),
+            'focus' => isset($validated['focus']),
         ]);
 
         $dataNewRoom = [
@@ -149,7 +165,6 @@ class RoomController extends Controller
             ];
 
             $room->questions[$i] = $data;
-            // dd($data);
         }
 
         return view('admin.room.edit.edit', [
@@ -167,6 +182,7 @@ class RoomController extends Controller
         // jika data kosong maka kembalikan message data tidak boleh kosong
         if (empty($data)) {
             return response()->json([
+                'status' => 'error',
                 'message' => 'Data tidak boleh kosong',
             ]);
         }
@@ -202,6 +218,7 @@ class RoomController extends Controller
             $room->questions()->where('id', $questionId)->update(['answer_id' => $answerId]);
         }
         return response()->json([
+            'status' => 'success',
             'message' => 'save questions success',
         ]);
     }
@@ -213,6 +230,7 @@ class RoomController extends Controller
         }
         $room->questions()->delete();
         $room->delete();
+        $this->reset($request, $room);
         return redirect()->route('admin.rooms');
     }
 
@@ -225,6 +243,8 @@ class RoomController extends Controller
         foreach ($room->assessmentHistories as $assessmentHistory) {
             $assessmentHistory->delete();
         }
+        $room->warnings()->delete();
+        $room->invitations()->delete();
         return redirect()->route('admin.rooms.detail', ['room' => $room->id]);
     }
 

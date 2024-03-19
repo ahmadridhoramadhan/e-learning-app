@@ -46,6 +46,7 @@ class DatabaseSeeder extends Seeder
                 'average_score' => true,
                 'answer_history' => true,
                 'list_score_user' => true,
+                'focus' => true,
             ]),
         ]);
 

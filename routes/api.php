@@ -20,3 +20,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('admin/rooms/save/{room}', 'App\Http\Controllers\RoomController@save')->name('admin.rooms.save');
 Route::post('user/{user}/rooms/save/{room}', 'App\Http\Controllers\ProgressController@saveStudentProgress')->name('user.rooms.save');
+Route::get('/search/invite/classroom', 'App\Http\Controllers\InvitationController@searchClassroom')->name('search.invite.classroom');
+Route::post('user/room/leave/{room}/{user}', 'App\Http\Controllers\WarningController@leaveRoom')->name('user.room.leave.process');

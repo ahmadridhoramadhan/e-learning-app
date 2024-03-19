@@ -1,4 +1,4 @@
-<x-editor-layout :title="$room->name">
+<x-editor-layout :title="$room->name" :questions="$room->questions" :roomId="$room->id" :room="$room">
     <form action="{{ route('admin.rooms.settings.process', $room->id) }}" method="POST">
         @csrf
         <x-inputs.formsettingsroom :$room />

@@ -13,6 +13,7 @@ class JoinRoomLayout extends Component
      */
     public function __construct(
         public string $title,
+        public object $room,
         public string $questions,
         public string $roomId,
         public string $maxTime,

@@ -11,6 +11,7 @@
 
 <style>
     .container {
+        --uib-color: black;
         --uib-size: 40px;
         --uib-color: black;
         --uib-speed: .9s;

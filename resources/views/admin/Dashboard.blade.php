@@ -1,6 +1,24 @@
 <x-app-layout :title="'Dashboard'">
+    <div class="grid grid-cols-3 gap-5 mb-10">
+        <div
+            class="dark:bg-slate-800 bg-slate-100 gap-3 flex justify-center items-center flex-col rounded-md shadow dark:shadow-slate-600 py-5">
+            <span class="text-center text-sm sm:text-base">Jumlah room</span>
+            <span class="text-3xl">{{ $rooms->count() }}</span>
+        </div>
+        <div
+            class="dark:bg-slate-800 bg-slate-100 gap-3 flex justify-center items-center flex-col rounded-md shadow dark:shadow-slate-600 py-5">
+            <span class="text-center text-sm sm:text-base">Room yang di tutup</span>
+            <span class="text-3xl">{{ $closedRoomsCount }}</span>
+        </div>
+        <div
+            class="dark:bg-slate-800 bg-slate-100 gap-3 flex justify-center items-center flex-col rounded-md shadow dark:shadow-slate-600 py-5">
+            <span class="text-center text-sm sm:text-base">Jumlah Siswa</span>
+            <span class="text-3xl">{{ $studentsCount }}</span>
+        </div>
+    </div>
+
     {{-- newest room --}}
-    <section class="flex flex-col mt-5 gap-4">
+    <section class="flex flex-col gap-4">
         <h2 class="text-3xl ">ROOM</h2>
         <div class="grid grid-cols-2 md:grid-cols-4 place-items-center lg:grid-cols-5 xl:grid-cols-6 gap-6 px-2">
             <div class="w-full">
@@ -17,7 +35,6 @@
                 <x-button.see-more :href="route('admin.rooms')" />
             </div>
         @endif
-
     </section>
 
     <section class="mb-16 mt-32 dark:bg-slate-800 rounded-md bg-gray-100 shadow dark:shadow-slate-500 py-5 px-3">

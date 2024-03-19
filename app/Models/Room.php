@@ -33,4 +33,14 @@ class Room extends Model
     {
         return $this->hasMany(AssessmentHistory::class);
     }
+
+    public function warnings()
+    {
+        return $this->hasMany(Warning::class);
+    }
+
+    public function invitations()
+    {
+        return $this->hasMany(invitation::class);
+    }
 }

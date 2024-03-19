@@ -29,12 +29,11 @@ class UserController extends Controller
 
     public function roomDetail(Room $room, AssessmentHistory $assessmentHistory)
     {
-
         // init
         $room->settings = json_decode($room->settings, true);
         $wrongAnswers = collect([]);
         $correctAnswers = collect([]);
-        $averageScoreRoom = 0;
+        $averageScore = 0;
 
         if ($assessmentHistory->id) {
             // ambil history berdasarkan id yang di masukkan di route
@@ -64,7 +63,7 @@ class UserController extends Controller
 
         // get average score student in this room
         if ($room->assessmentHistories) {
-            $averageScoreRoom = $room->assessmentHistories->avg('score') ? number_format($room->assessmentHistories->avg('score'), 2) : 0;
+            $averageScore = $room->assessmentHistories->avg('score') ? number_format($room->assessmentHistories->avg('score'), 2) : 0;
         }
 
         // get leader board
@@ -77,7 +76,7 @@ class UserController extends Controller
             'wrongAnswers' => $wrongAnswers,
             'correctAnswers' => $correctAnswers,
             'leaderBoard' => $leaderBoard,
-            'averageScoreRoom' => $averageScoreRoom,
+            'averageScore' => $averageScore,
         ]);
     }
 
@@ -100,7 +99,7 @@ class UserController extends Controller
         }
 
         // simpan password hash ke session
-        $request->session()->put('room_password', bcrypt($password));
+        $request->session()->put('room_password', $password);
 
         return redirect()->route('user.room.join', $room->id);
     }
@@ -134,6 +133,8 @@ class UserController extends Controller
             shuffle($questions);
         }
 
+        // dd($maxTime);
+
         return view('user.room.join', [
             'room' => $room,
             'questions' => json_encode($questions),
@@ -149,6 +150,9 @@ class UserController extends Controller
         $user = auth()->user();
         if ($user->progress) {
             $user->progress->delete();
+        }
+        if ($user->warnings->where('room_id', $room->id)->where('status', 'pending')->first()) {
+            $user->warnings->where('room_id', $room->id)->where('status', 'pending')->first()->delete();
         }
         $correctAnswers = $room->questions;
         $studentsAnswers = json_decode($request->get('data'));
@@ -214,7 +218,7 @@ class UserController extends Controller
         return redirect()->route('user.room.detail', $room->id)->with('success', 'submit anda sudah di sinpan');
     }
 
-    public function listAll(Request $request, Room $room)
+    public function listAllScore(Request $request, Room $room)
     {
         return view('user.room.listAllUsersScore', [
             'assessmentHistories' => $room->assessmentHistories->sortByDesc('score'),
@@ -225,22 +229,25 @@ class UserController extends Controller
     public function invitationsPage()
     {
 
-        return view('user.notifications');
+        return view('user.invitations');
     }
 
     public function historiesPage()
     {
         $user = auth()->user();
         $assessmentHistories = $user->assessmentHistories ? $user->assessmentHistories->sortByDesc('created_at') : collect([]);
-        $totalAlreadyDone = $assessmentHistories->count();
-        // ambil rata rata score dengan maksimal 2 angka di belakang koma
-        $averageScore = $assessmentHistories->avg('score') ? number_format($assessmentHistories->avg('score'), 2) : 0;
+
+        // grup assessment history berdasarkan hari yang sama
+        $assessmentHistories = $assessmentHistories->groupBy(function ($item) {
+            return $item->created_at->format('d M Y');
+        });
+
+        $dates = $assessmentHistories->keys();
 
         return view('user.histories', [
             'student' => $user,
-            'assessmentHistories' => $assessmentHistories,
-            'totalAlreadyDone' => $totalAlreadyDone,
-            'averageScore' => $averageScore,
+            'assessmentHistoriesGroups' => $assessmentHistories,
+            'dates' => $dates,
         ]);
     }
 }

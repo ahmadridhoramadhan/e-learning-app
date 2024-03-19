@@ -1,57 +1,39 @@
 <x-app-layout :class="'flex-auto'">
-    {{-- <section x-data="{
-        autoBreakLine: function(sentence) {
-            return sentence.split(' ').join('<br>');
-        },
-    }" x-init>
-        <h1 class="text-6xl font-semibold break-words leading-tight tracking-tight my-5 px-3 container mx-auto"
-            x-html="autoBreakLine('{{ $student->name }}');"></h1>
-        <div class="bg-black text-white relative">
-            <div class="container mx-auto pl-6 py-10 flex flex-col gap-7">
-                <!--email -->
-                <div class="flex gap-2 items-center">
-                    <div class="w-7 h-7 shrink-0"><x-icons.email /></div>
-                    <p class="truncate">{{ $student->email }}</p>
-                </div>
-                <!-- password -->
-                <div class="flex gap-2 items-center">
-                    <div class="w-7 h-7 shrink-0"><x-icons.padlock /></div>
-                    <p class="truncate">{{ $student->password }}</p>
-                </div>
+    <div class="dark:bg-slate-800 bg-slate-100 rounded-md shadow dark:shadow-slate-600 py-5 px-3 mb-5">
+        <div class="flex items-center gap-2 ml-6">
+            <div class="size-10">
+                @if (auth()->user()->fromClassroom->teacher->profile_picture_url)
+                    <img src="{{ auth()->user()->fromClassroom->teacher->profile_picture_url }}" alt="profile"
+                        class="w-full h-full rounded-full bg-black">
+                @else
+                    <x-icons.person />
+                @endif
+            </div>
+            <div>
+                <p class="font-semibold text-3xl">{{ auth()->user()->fromClassroom->name }}</p>
+                <p class="text-xs text-gray-500 -mt-1 dark:text-gray-400">
+                    {{ auth()->user()->fromClassroom->teacher->name }} <span class="text-white px-2">|</span>
+                    {{ auth()->user()->fromClassroom->teacher->email }}
+                </p>
             </div>
         </div>
-        <!-- statistik -->
-        <div class="grid grid-cols-3 gap-1 mt-1 container mx-auto">
-            <div class="border-2 border-black flex flex-col flex-auto items-center pt-2 shrink-0">
-                <p>nilai rata rata</p>
-                <p class="text-2xl font-bold flex items-center h-full py-4">{{ $averageScore }}</p>
-            </div>
-            <div class="border-2 border-black flex flex-col flex-auto items-center pt-2 shrink-0">
-                <p class="text-sm text-center">Room dikerjakan</p>
-                <p class="text-2xl font-bold flex items-center h-full py-4">{{ $totalAlreadyDone }}</p>
-            </div>
-            <div class="border-2 border-black flex flex-col flex-auto items-center pt-2 shrink-0">
-                <p>Dikeluarkan</p>
-                <p class="text-2xl font-bold flex items-center h-full py-4">99.5</p>
-            </div>
-        </div>
-    </section> --}}
 
+    </div>
     <div class="grid grid-cols-3 gap-5">
         <div
-            class="dark:bg-slate-800 gap-3 flex justify-center items-center flex-col rounded-md shadow dark:shadow-slate-600 py-5">
-            <span>Nilai Rata Rata</span>
+            class="dark:bg-slate-800 bg-slate-100 gap-3 flex justify-center items-center flex-col rounded-md shadow dark:shadow-slate-600 py-5">
+            <span class="text-center text-sm sm:text-base">Nilai Rata Rata</span>
             <span class="text-3xl">{{ $averageScore }}</span>
         </div>
         <div
-            class="dark:bg-slate-800 gap-3 flex justify-center items-center flex-col rounded-md shadow dark:shadow-slate-600 py-5">
-            <span>Room di kerjakan</span>
+            class="dark:bg-slate-800 bg-slate-100 gap-3 flex justify-center items-center flex-col rounded-md shadow dark:shadow-slate-600 py-5">
+            <span class="text-center text-sm sm:text-base">Room di kerjakan</span>
             <span class="text-3xl">{{ $totalAlreadyDone }}</span>
         </div>
         <div
-            class="dark:bg-slate-800 gap-3 flex justify-center items-center flex-col rounded-md shadow dark:shadow-slate-600 py-5">
-            <span>dikeluarkan dari room</span>
-            <span class="text-3xl">90</span>
+            class="dark:bg-slate-800 bg-slate-100 gap-3 flex justify-center items-center flex-col rounded-md shadow dark:shadow-slate-600 py-5">
+            <span class="text-center text-sm sm:text-base">dikeluarkan dari room</span>
+            <span class="text-3xl">{{ auth()->user()->warnings()->where('status', 'declined')->get()->count() }}</span>
         </div>
     </div>
 
@@ -69,12 +51,13 @@
                 {{-- card --}}
                 @foreach ($assessmentHistories as $assessmentHistory)
                     <a href="{{ route('user.room.detail', [$assessmentHistory->room->id, $assessmentHistory->id]) }}"
-                        class="border-2 flex flex-col items-center w-full aspect-square border-indigo-700 bg-indigo-100 rounded-md shadow-md max-w-52">
-                        <p class="text-xs py-2">
-                            {{ \Carbon\Carbon::parse($assessmentHistory->created_at)->format('j F Y') }}</p>
+                        class="border-2 text-center relative flex flex-col items-center w-full aspect-square border-indigo-700 dark:hover:bg-indigo-950 bg-indigo-100 dark:bg-transparent rounded-md shadow-md max-w-48">
+                        <time class="text-xs py-2 absolute top-0 left-0 right-0">
+                            {{ \Carbon\Carbon::parse($assessmentHistory->created_at)->format('j F Y') }}</time>
                         <div class="flex-auto flex items-center font-bold text-5xl">{{ $assessmentHistory->score }}
                         </div>
-                        <div class="p-2 line-clamp-2 break-words overflow-hidden font-semibold">
+                        <div
+                            class="p-2 line-clamp-2 text-center break-words overflow-hidden font-semibold absolute bottom-0 left-0 right-0">
                             {{ $assessmentHistory->room->name }}</div>
                     </a>
                 @endforeach
