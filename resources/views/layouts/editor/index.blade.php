@@ -21,8 +21,12 @@
     currentIndex: 0,
     addQuestion: function() {
         this.questions.push({
+            id: null,
             question: '<p>soal ...</p>',
-            answers: ['<p>jawaban yang benar ...</p>']
+            answers: [{
+                id: null,
+                answer: '<p>jawaban yang benar ...</p>'
+            }]
         });
         this.currentIndex = this.questions.length - 1;
         this.storeSession();
@@ -35,8 +39,12 @@
     },
 }" x-init="if (questions.length == 0) {
     questions.push({
+        id: null,
         question: '<p>soal ...</p>',
-        answers: ['<p>jawaban ...</p>']
+        answers: [{
+            'id': null,
+            answer: '<p>jawaban yang benar ...</p>'
+        }]
     });
 };
 storeSession();
@@ -277,7 +285,6 @@ setInterval(() => {
         // Render Summernote
         let currentElement = null;
 
-
         function renderSummernote(element) {
             element = element.closest(".editor");
 
@@ -307,7 +314,7 @@ setInterval(() => {
         function addAnswer() {
             let markup = `
                 <div class="relative">
-                    <div class="answer editor border-black border rounded-lg shadow-md p-2 pl-3 min-h-10 dark:border-white" @click="renderSummernote($event.target)">
+                    <div class="answer editor border-black border rounded-lg shadow-md p-2 pl-3 min-h-10 dark:border-white" @click="renderSummernote($event.target)" :data-id="null">
                         <p>
                             jawaban salah ...
                         </p>
@@ -332,11 +339,15 @@ setInterval(() => {
 
             // simpan isinya menjadi format JSON seperti ini {question: '', answers: ['','']}
             let data = {
+                id: question.dataset.id || null,
                 question: question.innerHTML,
                 answers: []
             };
             answers.forEach(answer => {
-                data.answers.push(answer.innerHTML);
+                data.answers.push({
+                    id: answer.dataset.id || null,
+                    answer: answer.innerHTML
+                });
             });
 
             // ambil data dari session storage
@@ -373,7 +384,7 @@ setInterval(() => {
                     requestOptions);
 
                 const data = await res.json();
-
+                console.log(data)
                 if (res.ok) {
                     // Create an alert element
                     const alertContainer = document.getElementById('alert');

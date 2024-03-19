@@ -11,21 +11,23 @@
                 <div class="border border-indigo-800 dark:border-indigo-500 rounded-md shadow-md w-fit py-1 px-5 text-xl mb-1"
                     x-text="currentIndex +1"></div>
                 <div class="question editor border-indigo-500 border rounded shadow-md p-2 min-h-48 resize-y overflow-auto break-all"
-                    @click="renderSummernote($event.target)" x-html="questions[currentIndex].question">
+                    @click="renderSummernote($event.target)" x-html="questions[currentIndex].question"
+                    :data-id="questions[currentIndex].id">
                 </div>
             </div>
 
 
             {{-- correct answers --}}
             <div class="answer editor border-black border rounded-lg shadow-md p-2 pl-3 min-h-10 bg-cyan-100 dark:bg-cyan-800 dark:border-cyan-500"
-                @click="renderSummernote($event.target)" x-html="questions[currentIndex].answers[0]">
+                @click="renderSummernote($event.target)" x-html="questions[currentIndex].answers[0].answer"
+                :data-id="questions[currentIndex].answers[0].id">
             </div>
             {{-- wrong answers / another answer --}}
             <template class="flex flex-col gap-3" x-for="(answer, index) in questions[currentIndex].answers">
                 <template x-if="index > 0"> {{-- tidak menampilkan yang pertama --}}
                     <div class="relative">
                         <div class="answer editor border-black border rounded-lg shadow-md p-2 pl-3 min-h-10 dark:border-white"
-                            @click="renderSummernote($event.target)" x-html="answer">
+                            @click="renderSummernote($event.target)" x-html="answer.answer" :data-id="answer.id">
                         </div>
 
                         <div class="rotate-45 text-red-500 absolute top-px right-px w-8 aspect-square"

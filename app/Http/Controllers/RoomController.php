@@ -157,9 +157,13 @@ class RoomController extends Controller
         foreach ($room->questions as $i => $question) {
             $answers = null;
             foreach ($question['answers'] as $answer) {
-                $answers[] = $answer->answer;
+                $answers[] =  [
+                    'id' => $answer->id,
+                    'answer' => $answer->answer
+                ];
             }
             $data = [
+                'id' => $question['id'],
                 'question' => $question['question'],
                 'answers' => $answers,
             ];
@@ -184,38 +188,34 @@ class RoomController extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' => 'Data tidak boleh kosong',
-            ]);
+            ], 401);
         }
 
         $answerModel = new Answer();
 
-        // hapus semua pertanyaan dan jawaban yang ada
-        $room->questions()->delete();
-
         foreach ($data as $key => $question) {
-            $dataQuestion = [
-                'room_id' => $room->id,
-                'question' => $question['question'],
-                'answer_id' => 0,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ];
-
-            $questionId = $room->questions()->insertGetId($dataQuestion);
+            $questionId = $room->questions()->updateOrCreate(
+                ['id' => $question['id'] ?? null],
+                [
+                    'room_id' => $room->id,
+                    'question' => $question['question'],
+                    'answer_id' => 0,
+                ]
+            );
             foreach ($question['answers'] as $key => $answer) {
-                $dataAnswer = [
-                    'question_id' => $questionId,
-                    'answer' => $answer,
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                ];
-                $answerModel->insert($dataAnswer);
+                $answerModel->updateOrCreate(
+                    ['id' => $answer['id'] ?? null],
+                    [
+                        'question_id' => $questionId->id,
+                        'answer' => $answer['answer'],
+                    ]
+                );
             }
 
             // ambil id pertama dari answer
-            $answerId = $answerModel->where('question_id', $questionId)->first()->id;
+            $answerId = $answerModel->where('question_id', $questionId->id)->first()->id;
             // update answer_id pada question
-            $room->questions()->where('id', $questionId)->update(['answer_id' => $answerId]);
+            $room->questions()->where('id', $questionId->id)->update(['answer_id' => $answerId]);
         }
         return response()->json([
             'status' => 'success',
