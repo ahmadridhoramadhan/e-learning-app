@@ -37,4 +37,31 @@ class AdminController extends Controller
             'closedRoomsCount' => $closedRoomsCount,
         ]);
     }
+
+    public function settingsPage(Request $request)
+    {
+        return view('admin.settings', ['user' => auth()->user()]);
+    }
+
+    public function settingsSave(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255|min:8',
+            'email' => 'required|string|email|max:255|min:8',
+            'password' => 'nullable|string|min:8',
+            'profile_picture_url' => 'nullable|string',
+        ]);
+        $user = auth()->user();
+
+        $user->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => $request->password ?? $user->password,
+            'profile_picture_url' => $request->profile_picture_url,
+        ]);
+
+        dd($request->profile_picture_url);
+
+        return redirect()->back()->with('success', 'Settings updated');
+    }
 }

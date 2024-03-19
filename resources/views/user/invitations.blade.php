@@ -1,11 +1,12 @@
 <x-app-layout :title="'Invitations'">
-    <div class="container mx-auto">
+    <div class="container mx-auto" x-init>
         <div class="flex flex-col gap-5">
             <div class="flex justify-between items-center">
                 <h1 class="text-3xl font-bold">Undangan</h1>
             </div>
             @forelse ($invitations as $invitation)
-                <div class="flex items-center gap-3 dark:bg-slate-800 py-4 px-3 rounded-md shadow dark:shadow-slate-600">
+                <div class="flex items-center gap-3 dark:bg-slate-800 py-4 px-3 rounded-md shadow dark:shadow-slate-600 "
+                    :class="'{{ $invitation->status }}' == 'done' && ' opacity-50'">
                     <div class="flex-auto">
                         <div class="sm:flex justify-between items-center">
                             <div class="flex items-center gap-3">

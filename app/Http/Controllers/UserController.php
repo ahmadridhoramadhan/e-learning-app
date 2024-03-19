@@ -80,11 +80,11 @@ class UserController extends Controller
         ]);
     }
 
-    public function ListTeachersAndRooms()
+    public function ListTeachersAndRooms(Request $request, User $teacher)
     {
         $teachers = User::where('is_admin', 1)->get();
         return view('user.room.search', [
-            'teachers' => $teachers,
+            'teachers' => $teacher->exists ? collect([$teacher]) : $teachers,
         ]);
     }
 
@@ -154,6 +154,10 @@ class UserController extends Controller
         if ($user->warnings->where('room_id', $room->id)->where('status', 'pending')->first()) {
             $user->warnings->where('room_id', $room->id)->where('status', 'pending')->first()->delete();
         }
+        if ($user->invited->first()) {
+            $user->invited->first()->status = 'done';
+            $user->invited->first()->save();
+        }
         $correctAnswers = $room->questions;
         $studentsAnswers = json_decode($request->get('data'));
         $score = 0;
@@ -215,7 +219,7 @@ class UserController extends Controller
             }
         }
 
-        return redirect()->route('user.room.detail', $room->id)->with('success', 'submit anda sudah di sinpan');
+        return redirect()->route('user.room.detail', $room->id)->with('success', 'submit anda sudah di simpan');
     }
 
     public function listAllScore(Request $request, Room $room)
@@ -249,5 +253,36 @@ class UserController extends Controller
             'assessmentHistoriesGroups' => $assessmentHistories,
             'dates' => $dates,
         ]);
+    }
+
+    // for an api
+    public function searchTeacherAndRoom(Request $request)
+    {
+        switch ($request->categories) {
+            case 'teacher':
+                $teachers = User::where('is_admin', 1)->where('name', 'like', '%' . $request->name . '%')->get();
+                return response()->json(
+                    [
+                        'status' => 'success',
+                        'teachers' => $request->name == '' ? [] : $teachers,
+                    ]
+                );
+                break;
+
+            case 'room':
+                $rooms = Room::where('name', 'like', '%' . $request->name . '%')->get();
+                return response()->json([
+                    'status' => 'success',
+                    'rooms' => $request->name == '' ? [] : $rooms,
+                ]);
+                break;
+
+            default:
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'categories not found',
+                ]);
+                break;
+        }
     }
 }

@@ -114,31 +114,47 @@
                     </div>
 
                     <div class="flex mx-1 gap-2">
-                        <form action="{{ route('admin.student.warning.accept', $warning->id) }}" method="POST"
-                            onsubmit="return confirm('Apakah anda yakin?')">
-                            @csrf
-                            @method('PUT')
-                            <button type="submit"
-                                class="size-8 p-1 md:size-10 dark:border-cyan-300 dark:bg-cyan-900 border rounded-lg">
-                                {{-- delete --}}
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-                                    class="w-full h-full">
-                                    <path fill-rule="evenodd"
-                                        d="M19.916 4.626a.75.75 0 0 1 .208 1.04l-9 13.5a.75.75 0 0 1-1.154.114l-6-6a.75.75 0 0 1 1.06-1.06l5.353 5.353 8.493-12.74a.75.75 0 0 1 1.04-.207Z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                            </button>
-                        </form>
-                        <form action="{{ route('admin.student.warning.decline', $warning->id) }}" method="POST"
-                            onsubmit="return confirm('Siswa tidak bisa lagi masuk ke room ini. Apakah anda yakin?')">
-                            @csrf
-                            @method('PUT')
-                            <button type="submit"
-                                class="size-8 p-1 md:size-10 dark:border-red-300 dark:bg-red-900 border rounded-lg">
-                                {{-- delete --}}
-                                <x-icons.close />
-                            </button>
-                        </form>
+                        <button data-dropdown-toggle="dropdownDots{{ $warning->id }}"
+                            data-dropdown-placement="bottom-start"
+                            class="flex-shrink-0 inline-flex self-center items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:bg-slate-900 dark:hover:bg-gray-800 dark:focus:ring-gray-600"
+                            type="button">
+                            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 4 15">
+                                <path
+                                    d="M3.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 6.041a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 5.959a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z" />
+                            </svg>
+                        </button>
+                        <div id="dropdownDots{{ $warning->id }}"
+                            class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-40 dark:bg-gray-700 dark:divide-gray-600">
+                            <ul class="py-2 text-sm text-gray-700 dark:text-gray-200"
+                                aria-labelledby="dropdownMenuIconButton">
+                                <li>
+                                    <form action="{{ route('admin.student.warning.accept', $warning->id) }}"
+                                        method="POST" onsubmit="return confirm('Apakah anda yakin?')">
+                                        @csrf
+                                        @method('PUT')
+                                        <button type="submit"
+                                            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white w-full text-start">
+                                            izinkan
+                                        </button>
+                                    </form>
+                                </li>
+                                <li>
+                                    <form action="{{ route('admin.student.warning.decline', $warning->id) }}"
+                                        method="POST"
+                                        onsubmit="return confirm('Siswa tidak bisa lagi masuk ke room ini. Apakah anda yakin?')">
+                                        @csrf
+                                        @method('PUT')
+                                        <button type="submit"
+                                            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white w-full text-start">
+                                            keluarkan
+                                        </button>
+                                    </form>
+
+                                </li>
+
+                            </ul>
+                        </div>
                     </div>
                 </div>
             @endforeach

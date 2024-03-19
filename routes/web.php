@@ -60,6 +60,9 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/invite/classroom/{room}/{classroom?}', 'App\Http\Controllers\InvitationController@inviteClassroomPage')->name('admin.invite.classroom');
     Route::post('/invite/classroom/{room}/{classroom?}/process', 'App\Http\Controllers\InvitationController@inviteClassroomProcess')->name('admin.invite.classroom.process');
     Route::delete('/invite/classroom/{room}/{classroom?}/delete/process', 'App\Http\Controllers\InvitationController@deleteInviteClassroomProcess')->name('admin.invite.classroom.delete.process');
+
+    Route::get('profile/settings', [AdminController::class, 'settingsPage'])->name('admin.settings');
+    Route::POST('profile/settings', [AdminController::class, 'settingsSave'])->name('admin.settings.save.process');
 });
 
 // user
@@ -67,7 +70,7 @@ Route::middleware(['auth'])->prefix('user')->group(function () {
     Route::get('/', [UserController::class, 'dashboardStudent'])->name('user.dashboard');
 
     Route::prefix('rooms')->group(function () {
-        Route::get('/detail/{room}/{assessmentHistory?}', [UserController::class, 'roomDetail'])->name('user.room.detail');
+        Route::get('/detail/{room?}/{assessmentHistory?}', [UserController::class, 'roomDetail'])->name('user.room.detail');
         Route::post('/join/{room}', [UserController::class, 'joinRoom'])->name('user.room.join.process');
         Route::get('/join/{room}', [UserController::class, 'joinRoomPage'])->name('user.room.join')->middleware('room.auth');
         Route::post('/submit/{room}', [UserController::class, 'submitRoom'])->name('user.room.submit');
@@ -76,7 +79,7 @@ Route::middleware(['auth'])->prefix('user')->group(function () {
 
     Route::get('/invitations', [InvitationController::class, 'index'])->name('user.invitations');
     Route::get('/histories', [UserController::class, 'historiesPage'])->name('user.histories');
-    Route::get('/search', [UserController::class, 'ListTeachersAndRooms'])->name('user.room.search');
+    Route::get('/search/{teacher?}', [UserController::class, 'ListTeachersAndRooms'])->name('user.room.search');
 });
 
 Route::get('/', function () {

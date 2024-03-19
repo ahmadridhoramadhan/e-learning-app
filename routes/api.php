@@ -22,3 +22,5 @@ Route::post('admin/rooms/save/{room}', 'App\Http\Controllers\RoomController@save
 Route::post('user/{user}/rooms/save/{room}', 'App\Http\Controllers\ProgressController@saveStudentProgress')->name('user.rooms.save');
 Route::get('/search/invite/classroom', 'App\Http\Controllers\InvitationController@searchClassroom')->name('search.invite.classroom');
 Route::post('user/room/leave/{room}/{user}', 'App\Http\Controllers\WarningController@leaveRoom')->name('user.room.leave.process');
+
+Route::get('user/search', 'App\Http\Controllers\UserController@searchTeacherAndRoom')->name('user.search');

@@ -2,8 +2,12 @@
     @if (session('error'))
         <x-alerts.warning :message="session('error')" />
     @endif
+    @if (session('success'))
+        <x-alerts.success :message="session('success')" />
+    @endif
 
-
+    {{-- TODO: skip password jika room tidak memerlukan password --}}
+    {{-- FIXME: jika submit tapi ada soal yang belum di jawab entah kenapa akan muncul alert --}}
 
     {{-- profile owner --}}
     <section class="dark:bg-slate-800 shadow dark:shadow-slate-600 py-4 bg-slate-100">

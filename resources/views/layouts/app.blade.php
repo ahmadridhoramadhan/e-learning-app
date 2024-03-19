@@ -16,18 +16,6 @@
 
 <body class="flex flex-col min-h-screen dark:bg-slate-900 dark:text-white">
 
-    {{-- include header --}}
-    {{-- @include('layouts.header') --}}
-
-    {{-- page content --}}
-    {{-- <main class="{{ $attributes->get('class') ?? 'flex-auto container mx-auto px-3 md:px-0' }}"">
-        {{ $slot }}
-    </main> --}}
-
-    {{-- include footer --}}
-    {{-- @include('layouts.footer') --}}
-
-
     <nav class="fixed top-0 z-50 w-full bg-gray-100 border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
         <div class="px-3 py-3 lg:px-5 lg:pl-3">
             <div class="flex items-center justify-between">
@@ -92,12 +80,12 @@
                             </div>
                             <ul class="py-1" role="none">
                                 <li>
-                                    <a href="#"
+                                    <a href="{{ auth()->user()->is_admin ? route('admin.dashboard') : route('user.dashboard') }}"
                                         class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
                                         role="menuitem">Dashboard</a>
                                 </li>
                                 <li>
-                                    <a href="#"
+                                    <a href="{{ auth()->user()->is_admin ? route('admin.settings') : route('user.dashboard') }}"
                                         class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
                                         role="menuitem">Settings</a>
                                 </li>
@@ -164,7 +152,6 @@
                             <span class="flex-1 ms-3 whitespace-nowrap">My Students</span>
                         </a>
                     </li>
-
                     <li>
                         <a href="{{ route('user.room.search') }}"
                             class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group {{ Route::is('user.room.search') ? 'dark:bg-slate-900 ' : '' }}">

@@ -1,4 +1,4 @@
-<div class="relative" x-data="{ isOpen: false }">
+<div class="relative z-0" x-data="{ isOpen: false }">
     <div class="border-2 transition-all flex items-center px-3 py-2 gap-3 relative z-10 rounded shadow-md"
         :class="isOpen && 'border-cyan-700 dark:border-cyan-500 dark:bg-cyan-900 bg-cyan-100 w-fit ml-3'"
         @click="isOpen=!isOpen">
