@@ -8,12 +8,12 @@
         <div
             class="dark:bg-slate-800 bg-slate-100 gap-3 flex justify-center items-center flex-col rounded-md shadow dark:shadow-slate-600 py-5">
             <span class="text-center text-sm sm:text-base">Room yang di tutup</span>
-            <span class="text-3xl">{{ $closedRoomsCount }}</span>
+            <span class="text-3xl">{{ $closedRoomsCount ?? 0 }}</span>
         </div>
         <div
             class="dark:bg-slate-800 bg-slate-100 gap-3 flex justify-center items-center flex-col rounded-md shadow dark:shadow-slate-600 py-5">
             <span class="text-center text-sm sm:text-base">Jumlah Siswa</span>
-            <span class="text-3xl">{{ $studentsCount }}</span>
+            <span class="text-3xl">{{ $studentsCount ?? 0 }}</span>
         </div>
     </div>
 

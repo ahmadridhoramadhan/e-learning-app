@@ -68,7 +68,6 @@ class RoomController extends Controller
 
     public function settings(Request $request, Room $room)
     {
-        dd($request->all());
         $validated = $request->validate([
             'name' => 'required',
             'password' => 'min:5|nullable',

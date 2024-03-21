@@ -25,13 +25,13 @@ class RoomAuth
 
         // check user warning exist
         if (auth()->user()->warningExist($room->id)) {
-            return redirect()->route('user.room.detail', $room->id)->with('error', 'Anda tidak bisa masuk karena ada warning');
+            return redirect()->route('user.room.detail', $room->id)->with('error', 'Anda tidak di izinkan masuk');
         }
 
         $user = auth()->user();
         if (!json_decode($room->settings)->answer_again) {
             if ($user->assessmentHistories->where('room_id', $room->id)->first()) {
-                return redirect()->route('user.room.detail', $room->id)->with('error', 'Anda sudah pernah mengerjakan soal ini');
+                return redirect()->route('user.room.detail', $room->id)->with('error', 'Anda hanya bisa mengerjakan sekali');
             }
         }
 

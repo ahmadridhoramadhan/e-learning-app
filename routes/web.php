@@ -60,9 +60,6 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/invite/classroom/{room}/{classroom?}', 'App\Http\Controllers\InvitationController@inviteClassroomPage')->name('admin.invite.classroom');
     Route::post('/invite/classroom/{room}/{classroom?}/process', 'App\Http\Controllers\InvitationController@inviteClassroomProcess')->name('admin.invite.classroom.process');
     Route::delete('/invite/classroom/{room}/{classroom?}/delete/process', 'App\Http\Controllers\InvitationController@deleteInviteClassroomProcess')->name('admin.invite.classroom.delete.process');
-
-    Route::get('profile/settings', [AdminController::class, 'settingsPage'])->name('admin.settings');
-    Route::POST('profile/settings', [AdminController::class, 'settingsSave'])->name('admin.settings.save.process');
 });
 
 // user
@@ -81,6 +78,9 @@ Route::middleware(['auth'])->prefix('user')->group(function () {
     Route::get('/histories', [UserController::class, 'historiesPage'])->name('user.histories');
     Route::get('/search/{teacher?}', [UserController::class, 'ListTeachersAndRooms'])->name('user.room.search');
 });
+Route::get('profile/settings', [AdminController::class, 'settingsPage'])->name('settings')->middleware('auth');
+Route::POST('profile/settings', [AdminController::class, 'settingsSave'])->name('settings.save.process')->middleware('auth');
+
 
 Route::get('/', function () {
     return view('home');

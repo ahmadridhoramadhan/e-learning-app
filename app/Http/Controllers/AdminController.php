@@ -14,6 +14,7 @@ class AdminController extends Controller
         // cek apkah userClass ada atau tidak
         if ($user->classRooms->isEmpty()) {
             return view('admin.dashboard', [
+                'classrooms' => collect([]),
                 'rooms' => $rooms,
                 'class' => null,
             ]);
@@ -53,14 +54,11 @@ class AdminController extends Controller
         ]);
         $user = auth()->user();
 
-        $user->update([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => $request->password ?? $user->password,
-            'profile_picture_url' => $request->profile_picture_url,
-        ]);
-
-        dd($request->profile_picture_url);
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->password = $request->password ?? $user->password;
+        $user->profile_picture_url = $request->profile_picture_url;
+        $user->save();
 
         return redirect()->back()->with('success', 'Settings updated');
     }

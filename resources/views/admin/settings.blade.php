@@ -17,7 +17,7 @@
                 <label for="dropzone-file"
                     class="flex relative flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
                     <img src="{{ $user->profile_picture_url }}" alt="avatar" id="show-image-preview"
-                        class="absolute h-full z-10 bg-black aspect-square object-cover" />
+                        class="absolute h-full z-10 aspect-square object-cover" />
                     <div class="flex flex-col items-center justify-center pt-5 pb-6 absolute z-0">
                         <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
                             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
