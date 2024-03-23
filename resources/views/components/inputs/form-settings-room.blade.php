@@ -5,9 +5,9 @@
             $settings = $room ? json_decode($room->settings, true) : [];
         }
     @endphp
-    <x-inputs.text2 :value="$room['name'] ?? false" :name="'name'" :label="'Nama Room'" :error="$errors->first('name')" required />
-    <x-inputs.text2 :value="$room['password'] ?? false" :name="'password'" :label="'Password'" :type="'password'" :error="$errors->first('password')" />
-    <x-inputs.text2 :value="$settings['max_time'] ?? false" :name="'timer'" :label="'Waktu Pengerjaan'" :type="'number'" :error="$errors->first('timer')" />
+    <x-inputs.text :value="$room['name'] ?? false" :name="'name'" :label="'Nama Room'" :error="$errors->first('name')" required />
+    <x-inputs.text :value="$room['password'] ?? false" :name="'password'" :label="'Password'" :type="'password'" :error="$errors->first('password')" />
+    <x-inputs.text :value="$settings['max_time'] ?? false" :name="'timer'" :label="'Waktu Pengerjaan'" :type="'number'" :error="$errors->first('timer')" />
 
     <x-inputs.checkbox :checked="$settings['show_result'] ?? false" :name="'show_result'" :label="'Lihat Hasil'" :value="true" :explanation="'hasil jawaban akan langsung ditampilkan setelah siswa melakukan submit'" />
     <x-inputs.checkbox :checked="$settings['answer_history'] ?? false" :name="'answer_history'" :label="'History Jawaban'" :value="true" :explanation="'siswa dapat melihat soal lagi setelah di submit beserta jawaban yang benar'" />

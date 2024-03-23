@@ -5,7 +5,7 @@
             <h1 class="text-center text-2xl my-5">Buat Room Baru</h1>
 
             {{-- form settings --}}
-            <x-inputs.formsettingsroom />
+            <x-inputs.form-settings-room />
 
         </div>
 

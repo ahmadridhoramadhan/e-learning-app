@@ -1,18 +1,19 @@
 <?php
 
-namespace App\View\Components;
+namespace App\View\Components\cards;
 
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class EditorLayout extends Component
+class room extends Component
 {
     /**
      * Create a new component instance.
      */
-    public function __construct(public string $roomId, public object $room, public string $title)
-    {
+    public function __construct(
+        public object $room,
+    ) {
         //
     }
 
@@ -21,6 +22,6 @@ class EditorLayout extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('layouts.editor');
+        return view('components.cards.room');
     }
 }

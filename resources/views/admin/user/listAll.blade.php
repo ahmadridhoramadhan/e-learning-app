@@ -18,7 +18,7 @@
                         class="text-3xl font-semibold w-full focus:border-b-2 border-black outline-none bg-transparent border-0 ring-0 text-center mb-7">
                 </form>
                 <div class="grid gap-5 place-items-center xl:grid-cols-5 grid-cols-2 lg:grid-cols-3">
-                    <x-button.add-user :classroomId="$classroom->id" />
+                    <x-buttons.add-user :classroomId="$classroom->id" />
                     @foreach ($classroom->students as $student)
                         <div
                             class="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 h-full">
@@ -38,7 +38,7 @@
                                     class="z-10 hidden text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
                                     <ul class="py-2" aria-labelledby="dropdownButton">
                                         <li>
-                                            <x-button.edit-user :$student />
+                                            <x-buttons.edit-user :$student />
                                         </li>
                                         <li>
                                             <a href="#"

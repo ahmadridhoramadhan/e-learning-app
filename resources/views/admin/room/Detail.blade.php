@@ -269,11 +269,11 @@
     {{-- delete zoon --}}
     <section class="border-2 rounded shadow-md py-2 border-red-600 my-8 dark:border-red-500">
         {{-- card --}}
-        <x-cards.deleteindangerzone :action="route('admin.rooms.closeOrOpen.process', $room->id)" :title="($room->is_active ? 'Tutup' : 'Buka') . ' Room'" :explanation="'Room akan di tutup sampai anda membukanya. Data tidak akan hilang namun siswa tidak dapat menjawab lagi.'" :buttonText="$room->is_active ? 'Tutup' : 'Buka'"
+        <x-cards.delete-in-danger-zone :action="route('admin.rooms.closeOrOpen.process', $room->id)" :title="($room->is_active ? 'Tutup' : 'Buka') . ' Room'" :explanation="'Room akan di tutup sampai anda membukanya. Data tidak akan hilang namun siswa tidak dapat menjawab lagi.'" :buttonText="$room->is_active ? 'Tutup' : 'Buka'"
             :method="'PUT'" />
-        <x-cards.deleteindangerzone :action="route('admin.rooms.questions.reset.process', $room->id)" :title="'Hapus Semua Soal'" :explanation="'semua soal akan di hapus dari room. Data lain akan tetap di simpan'" />
-        <x-cards.deleteindangerzone :action="route('admin.rooms.reset.process', $room->id)" :title="'Reset Data'" :explanation="'Semua Data siswa yang menjawab akan di hapus termasuk guru yang jadi pengawas.'" :buttonText="'Reset'" />
-        <x-cards.deleteindangerzone :action="route('admin.rooms.delete.process', $room->id)" :title="'Hapus Room'" :explanation="'Semua data akan di hapus termasuk data siswa yang mengerjakan'" />
+        <x-cards.delete-in-danger-zone :action="route('admin.rooms.questions.reset.process', $room->id)" :title="'Hapus Semua Soal'" :explanation="'semua soal akan di hapus dari room. Data lain akan tetap di simpan'" />
+        <x-cards.delete-in-danger-zone :action="route('admin.rooms.reset.process', $room->id)" :title="'Reset Data'" :explanation="'Semua Data siswa yang menjawab akan di hapus termasuk guru yang jadi pengawas.'" :buttonText="'Reset'" />
+        <x-cards.delete-in-danger-zone :action="route('admin.rooms.delete.process', $room->id)" :title="'Hapus Room'" :explanation="'Semua data akan di hapus termasuk data siswa yang mengerjakan'" />
     </section>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>

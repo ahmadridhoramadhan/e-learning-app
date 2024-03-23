@@ -51,7 +51,7 @@
     <div class="flex flex-col gap-5">
         {{-- card close --}}
         @foreach ($teachers as $teacher)
-            <x-cards.roomsteacherlist :teacher="$teacher" />
+            <x-cards.rooms-teacher-list :$teacher />
         @endforeach
     </div>
 

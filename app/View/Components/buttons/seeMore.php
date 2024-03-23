@@ -1,17 +1,17 @@
 <?php
 
-namespace App\View\Components\button;
+namespace App\View\components\buttons;
 
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class addUser extends Component
+class seeMore extends Component
 {
     /**
      * Create a new component instance.
      */
-    public function __construct(public string $classroomId)
+    public function __construct(public string $href)
     {
         //
     }
@@ -21,6 +21,6 @@ class addUser extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.button.add-user');
+        return view('components.buttons.see-more');
     }
 }

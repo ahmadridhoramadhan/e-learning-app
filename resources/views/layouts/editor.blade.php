@@ -69,8 +69,8 @@ setInterval(() => {
                             </path>
                         </svg>
                     </button>
-                    <a href="https://flowbite.com" class="flex ms-2 md:me-24">
-                        {{-- <img src="https://flowbite.com/docs/images/logo.svg" class="h-8 me-3" alt="FlowBite Logo" /> --}}
+                    <a href="#" class="flex ms-2 md:me-24">
+                        {{-- <img src="#/docs/images/logo.svg" class="h-8 me-3" alt="FlowBite Logo" /> --}}
                         <span
                             class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">ISA</span>
                     </a>
@@ -152,7 +152,7 @@ setInterval(() => {
             <div
                 class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-200 dark:bg-slate-900 shadow dark:shadow-slate-600 bg-white dark:hover:bg-slate-700 group {{ Route::is('user.dashboard') ? 'dark:bg-slate-900 ' : '' }}">
                 <div class="flex flex-auto items-center">
-                    <a href="{{ route('user.room.detail', $roomId) }}" class="flex-auto ml-2">
+                    <a href="{{ route('admin.rooms.detail', $roomId) }}" class="flex-auto ml-2">
                         <span class="text-xl">{{ $title }}</span><br>
                     </a>
                     <a href="{{ route('admin.rooms.settings', request()->segment(4)) }}" class="block w-7 h-7 mr-2">
@@ -414,22 +414,6 @@ setInterval(() => {
                 console.error(error);
             }
         }
-    </script>
-
-
-    <script>
-        // Let us open our database
-        const request = window.indexedDB.open("MyTestDatabase", 3);
-        let db
-        request.onerror = (event) => {
-            console.log('error');
-        };
-        request.onsuccess = (event) => {
-            db = event.target.result;
-            console.log(db);
-
-            const transaction = db.transaction(["customers"], "readwrite");
-        };
     </script>
 </body>
 

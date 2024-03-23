@@ -1,17 +1,17 @@
 <?php
 
-namespace App\View\Components;
+namespace App\View\Components\alerts;
 
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class EditorLayout extends Component
+class outWhileWorking extends Component
 {
     /**
      * Create a new component instance.
      */
-    public function __construct(public string $roomId, public object $room, public string $title)
+    public function __construct(public string $roomId)
     {
         //
     }
@@ -21,6 +21,6 @@ class EditorLayout extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('layouts.editor');
+        return view('components.alerts.out-while-working');
     }
 }

@@ -1,19 +1,20 @@
 <?php
 
-namespace App\View\Components;
+namespace App\View\Components\inputs;
 
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class EditorLayout extends Component
+class formSettingsRoom extends Component
 {
+    public ?object $room;
     /**
      * Create a new component instance.
      */
-    public function __construct(public string $roomId, public object $room, public string $title)
+    public function __construct($room = null)
     {
-        //
+        $this->room = $room;
     }
 
     /**
@@ -21,6 +22,6 @@ class EditorLayout extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('layouts.editor');
+        return view('components.inputs.form-settings-room');
     }
 }

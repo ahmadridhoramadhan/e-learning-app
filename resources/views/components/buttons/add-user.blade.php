@@ -10,12 +10,12 @@
             <form action="{{ route('admin.users.create.process', $classroomId) }}" method="POST"
                 class="w-full flex flex-col gap-3">
                 @csrf
-                <x-inputs.text2 :id="'nama' . $classroomId" :label="'Nama'" :name="'name'" :error="''"
+                <x-inputs.text :id="'nama' . $classroomId" :label="'Nama'" :name="'name'" :error="''" :value="''"
+                    required />
+                <x-inputs.text :id="'email' . $classroomId" :label="'Email'" :name="'email'" :type="'email'" :error="''"
                     :value="''" required />
-                <x-inputs.text2 :id="'email' . $classroomId" :label="'Email'" :name="'email'" :type="'email'"
-                    :error="''" :value="''" required />
                 <div>
-                    <x-inputs.text2 :id="'password' . $classroomId" :label="'Password'" :name="'password'" :type="'password'"
+                    <x-inputs.text :id="'password' . $classroomId" :label="'Password'" :name="'password'" :type="'password'"
                         :error="''" :value="''" />
                     <p class="text-xs mt-1 ml-px">Generate password otomatis ketika tidak di isi</p>
                 </div>

@@ -25,13 +25,15 @@
         </header>
 
         @if (session('error'))
-            <x-alert.danger :title="'Login Error'" :message="session('error')" />
+            <x-alerts.danger :message="session('error')" />
         @endif
 
         <div class="w-full flex flex-col gap-3 mb-4 mt-10">
 
-            <x-inputs.text name="email" label="Email" type="email" error="{{ $errors->first('email') }}" />
-            <x-inputs.text name="password" label="Password" type="password" error="{{ $errors->first('password') }}" />
+            <x-inputs.text name="email" label="Email" type="email" error="{{ $errors->first('email') }}"
+                :value="''" />
+            <x-inputs.text name="password" label="Password" type="password" error="{{ $errors->first('password') }}"
+                :value="''" />
         </div>
 
         <div class="w-full">

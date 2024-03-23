@@ -126,8 +126,8 @@
                             <form action="{{ route('user.room.join.process', $room->id) }}" method="post">
                                 @csrf
                                 <div class="flex flex-col gap-5 p-5">
-                                    <x-inputs.text2 id="password" name="password" type="password" required
-                                        :label="'Password'" :value="''" :error="$errors->first('password')" />
+                                    <x-inputs.text id="password" name="password" required :label="'Password'"
+                                        :value="''" :error="$errors->first('password')" />
                                     <button type="submit"
                                         class="w-full border-2 border-cyan-600 text-cyan-700 bg-cyan-100 py-4 rounded-md shadow-md">Kerjakan</button>
                                 </div>
@@ -164,7 +164,7 @@
                 {{-- question container --}}
                 <div class="px-2 mt-5">
                     @foreach ($wrongAnswers as $wrongAnswer)
-                        <x-cards.reviewquestion :question="$wrongAnswer" />
+                        <x-cards.question-history :question="$wrongAnswer" />
                     @endforeach
                 </div>
             </section>
@@ -182,7 +182,7 @@
                 <div class="px-2 mt-5">
                     {{-- question card --}}
                     @foreach ($correctAnswers as $correctAnswer)
-                        <x-cards.reviewquestion :question="$correctAnswer" />
+                        <x-cards.question-history :question="$correctAnswer" />
                     @endforeach
                 </div>
             </section>

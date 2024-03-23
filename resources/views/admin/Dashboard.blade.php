@@ -22,7 +22,7 @@
         <h2 class="text-3xl ">ROOM</h2>
         <div class="grid grid-cols-2 md:grid-cols-4 place-items-center lg:grid-cols-5 xl:grid-cols-6 gap-6 px-2">
             <div class="w-full">
-                <x-cards.addroom />
+                <x-buttons.add-room />
                 <p class="text-center">Buat Room Baru</p>
             </div>
             @foreach ($rooms as $room)
@@ -32,7 +32,7 @@
 
         @if ($rooms->count() > 5)
             <div class="ml-auto">
-                <x-button.see-more :href="route('admin.rooms')" />
+                <x-buttons.see-more :href="route('admin.rooms')" />
             </div>
         @endif
     </section>

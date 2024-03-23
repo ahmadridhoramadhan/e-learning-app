@@ -18,7 +18,7 @@
                 <p class="truncate">{{ $student->password }}</p>
             </div>
 
-            <x-button.edit-user :$student />
+            <x-buttons.edit-user :$student />
         </div>
         {{-- statistik --}}
         <div class="flex justify-between gap-1 mt-1 mx-1 md:mx-0">
@@ -64,8 +64,9 @@
     {{-- delete zoon --}}
     <section class="border-2 rounded shadow-md py-2 border-red-600 my-8 mx-3 md:mx-0">
         {{-- card --}}
-        <x-cards.deleteindangerzone :title="'Reset Siswa'" :explanation="'Semua room yang sudah dikerjakan siswa akan di hapus.'" :action="route('admin.users.reset.process', $student->id)" :buttonText="'Reset'"
+        <x-cards.delete-in-danger-zone :title="'Reset Siswa'" :explanation="'Semua room yang sudah dikerjakan siswa akan di hapus.'" :action="route('admin.users.reset.process', $student->id)" :buttonText="'Reset'"
             :method="'PUT'" />
-        <x-cards.deleteindangerzone :title="'Hapus Siswa'" :explanation="'Siswa ini akan di hapus dan tidak dapat dikembalikan lagi.'" :action="route('admin.users.delete.process', $student->id)" />
+        <x-cards.delete-in-danger-zone :title="'Hapus Siswa'" :explanation="'Siswa ini akan di hapus dan tidak dapat dikembalikan lagi.'" :action="route('admin.users.delete.process', $student->id)" />
     </section>
 </x-app-layout>
+{{-- FIXME: perbaiki desain ini --}}

@@ -7,10 +7,9 @@
     <div class="max-w-xl mx-auto mt-4">
         <form action="" method="POST" class="space-y-6">
             @csrf
-            <x-inputs.text2 :label="'Nama'" :name="'name'" :value="$user->name" :error="$errors->first('name')" />
-            <x-inputs.text2 :label="'Email'" :name="'email'" :type="'email'" :value="$user->email"
-                :error="$errors->first('email')" />
-            <x-inputs.text2 :label="'Password'" :name="'password'" :type="'password'" :value="''"
+            <x-inputs.text :label="'Nama'" :name="'name'" :value="$user->name" :error="$errors->first('name')" />
+            <x-inputs.text :label="'Email'" :name="'email'" :type="'email'" :value="$user->email" :error="$errors->first('email')" />
+            <x-inputs.text :label="'Password'" :name="'password'" :type="'password'" :value="''"
                 :error="$errors->first('password')" />
 
             <div class="flex items-center justify-center w-full">

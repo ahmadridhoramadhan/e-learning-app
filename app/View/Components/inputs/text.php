@@ -9,19 +9,23 @@ use Illuminate\View\Component;
 class text extends Component
 {
     public $name;
+    public $id;
     public $label;
     public $type;
     public $error;
+    public $value;
 
     /**
      * Create a new component instance.
      */
-    public function __construct($name, $label, $type = 'text', $error)
+    public function __construct($name, $label, $type = 'text', $error = null, $value = null, $id = null)
     {
         $this->name = $name;
+        $this->id = $name;
         $this->error = $error;
         $this->label = $label;
         $this->type = in_array($type, ['email', 'text', 'password']) ? $type : 'text';
+        $this->value = $value;
     }
 
     /**
