@@ -14,4 +14,20 @@ class AnswerHistory extends Model
     {
         return $this->belongsTo(Question::class);
     }
+
+    public function scopeGetWrongAnswer($query, $room_id, $assessmentHistory_id)
+    {
+        return $query->where('assessment_history_id', $assessmentHistory_id)
+            ->where('room_id', $room_id)
+            ->where('status', 'wrong')
+            ->get();
+    }
+
+    public function scopeGetCorrectAnswer($query, $room_id, $assessmentHistory_id)
+    {
+        return $query->where('assessment_history_id', $assessmentHistory_id)
+            ->where('room_id', $room_id)
+            ->where('status', 'correct')
+            ->get();
+    }
 }

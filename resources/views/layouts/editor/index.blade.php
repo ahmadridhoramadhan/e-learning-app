@@ -415,6 +415,22 @@ setInterval(() => {
             }
         }
     </script>
+
+
+    <script>
+        // Let us open our database
+        const request = window.indexedDB.open("MyTestDatabase", 3);
+        let db
+        request.onerror = (event) => {
+            console.log('error');
+        };
+        request.onsuccess = (event) => {
+            db = event.target.result;
+            console.log(db);
+
+            const transaction = db.transaction(["customers"], "readwrite");
+        };
+    </script>
 </body>
 
 </html>

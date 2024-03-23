@@ -43,4 +43,10 @@ class Room extends Model
     {
         return $this->hasMany(invitation::class);
     }
+
+    public function scopeGetAverageScore($query)
+    {
+        $averageScore = $this->assessmentHistories->avg('score');
+        return $averageScore ? number_format($averageScore, 2) : 0;
+    }
 }

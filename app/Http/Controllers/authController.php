@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
 
-class authController extends Controller
+class AuthController extends Controller
 {
     public function index(Request $request)
     {

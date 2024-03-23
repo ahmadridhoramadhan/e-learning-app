@@ -26,6 +26,7 @@ class InvitationController extends Controller
     {
         return view('admin.invite', ['classroom' => $classroom, 'room' => $room]);
     }
+
     public function inviteClassroomProcess(Request $request, Room $room, classRoom $classroom)
     {
         $message = 'tolong kerjakan segera!';

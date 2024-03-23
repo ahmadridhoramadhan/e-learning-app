@@ -25,4 +25,9 @@ class AssessmentHistory extends Model
     {
         return $this->hasMany(AnswerHistory::class);
     }
+
+    public function scopeLeaderBoard($query, $room_id)
+    {
+        return $query->where('room_id', $room_id)->orderBy('score', 'desc')->limit(5)->get();
+    }
 }

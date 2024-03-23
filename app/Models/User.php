@@ -99,4 +99,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(Warning::class, 'to');
     }
+
+    public function scopeTotalStudentAllClass($query)
+    {
+        $classrooms = $this->classRooms;
+        $total = 0;
+        foreach ($classrooms as $classroom) {
+            $total += $classroom->students->count();
+        }
+        return $total;
+    }
 }
