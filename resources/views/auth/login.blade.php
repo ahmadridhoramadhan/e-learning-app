@@ -37,12 +37,14 @@
 
         <div class="w-full">
             <button type="submit"
-                class="w-full flex justify-center items-center border-2 dark:border-gray-400 border-black rounded-md py-5 mb-10">
+                class="w-full flex justify-center items-center dark:bg-slate-800 shadow bg-slate-100 dark:shadow-slate-600 rounded-md py-5">
                 Login
                 <x-icons.login />
             </button>
+            <div class="relative border flex justify-center mt-14 mb-10 sm:mx-4 mx-2"><span
+                    class="absolute -bottom-3 dark:bg-slate-900 px-2 bg-white">atau</span></div>
             <a href="{{ route('google.login') }}"
-                class="flex items-center justify-center gap-5 w-full py-3 border-2 border-black rounded-md dark:border-gray-400">
+                class="flex items-center justify-center gap-5 w-full py-3 dark:bg-slate-800 shadow bg-slate-100 dark:shadow-slate-600 rounded-md text-sm sm:text-base">
                 <img src="/icons/google.svg" alt="">
                 Masuk menggunakan google
             </a>

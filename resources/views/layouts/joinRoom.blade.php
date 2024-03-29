@@ -155,7 +155,7 @@
         {{-- main content --}}
         <div class="sm:p-4 p-2 mt-14">
             <div class="flex justify-center">
-                <div class=" text-xl bg-slate-800 rounded mb-4 -mt-2 p-2" id="countdown">00:00</div>
+                <div class=" text-xl dark:bg-slate-800 rounded mb-4 -mt-2 p-2" id="countdown">00:00</div>
             </div>
             {{ $slot }}
         </div>
