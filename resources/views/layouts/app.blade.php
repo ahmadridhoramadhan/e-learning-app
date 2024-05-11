@@ -108,14 +108,39 @@
     </nav>
 
     <aside id="logo-sidebar"
-        class="fixed top-0 left-0 z-40 flex flex-col justify-between w-64 h-screen pt-20 transition-transform -translate-x-full bg-gray-100 border-r border-gray-200 sm:translate-x-0 dark:bg-gray-800 dark:border-gray-700"
+        class="fixed top-0 left-0 z-40 flex flex-col justify-between w-64 h-screen pt-20 transition-transform -translate-x-full bg-gray-100 border-r border-gray-200 sm:translate-x-0 dark:bg-gray-800 dark:border-gray-700 overflow-auto"
         aria-label="Sidebar">
-        <div class="h-full px-3 pb-4 overflow-y-auto bg-gray-100 dark:bg-gray-800">
+        <div class="h-full px-3 pb-4 overflow-y-auto bg-gray-100 dark:bg-gray-800 overflow-hidden">
             <ul class="space-y-2 font-medium">
+                <li>
+                    <a href="{{ route('settings') }}" class="flex gap-2 text-sm items-center">
+                        <div
+                            class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600 shrink-0">
+                            <span class="sr-only">Open user menu</span>
+                            @if (Auth::user()->profile_picture_url == null)
+                                <div class="size-8">
+                                    <x-icons.person />
+                                </div>
+                            @else
+                                <img class="w-8 h-8 rounded-full" src="{{ Auth::user()->profile_picture_url }}"
+                                    alt="user photo">
+                            @endif
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-900 dark:text-white" role="none">
+                                {{ Auth::user()->name }}
+                            </p>
+                            <p class="text-sm font-medium text-gray-500 truncate dark:text-gray-400" role="none">
+                                {{ Auth::user()->email }}
+                            </p>
+                        </div>
+                    </a>
+                </li>
+                <hr>
                 @if (Auth::user()->is_admin)
                     <li>
                         <a href="{{ route('admin.dashboard') }}"
-                            class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group {{ Route::is('admin.dashboard') ? 'dark:bg-slate-900 ' : '' }}">
+                            class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group {{ Route::is('admin.dashboard') ? 'dark:bg-slate-900 bg-white ' : '' }}">
                             <svg class="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
                                 aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                                 viewBox="0 0 22 21">
@@ -127,9 +152,10 @@
                             <span class="ms-3">Dashboard</span>
                         </a>
                     </li>
+
                     <li>
                         <a href="{{ route('admin.rooms') }}"
-                            class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group {{ Route::is('admin.rooms') || Route::is('admin.rooms.detail') ? 'dark:bg-slate-900 ' : '' }}">
+                            class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group {{ Route::is('admin.rooms') || Route::is('admin.rooms.detail') ? 'dark:bg-slate-900 bg-white' : '' }}">
                             <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
                                 aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                                 viewBox="0 0 18 18">
@@ -142,7 +168,7 @@
                     </li>
                     <li>
                         <a href="{{ route('admin.users') }}"
-                            class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group {{ Route::is('admin.users') || Route::is('admin.users.detail') ? 'dark:bg-slate-900 ' : '' }}">
+                            class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group {{ Route::is('admin.users') || Route::is('admin.users.detail') ? 'dark:bg-slate-900 bg-white' : '' }}">
                             <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
                                 aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                                 viewBox="0 0 20 18">
@@ -154,7 +180,7 @@
                     </li>
                     <li>
                         <a href="{{ route('user.room.search') }}"
-                            class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group {{ Route::is('user.room.search') ? 'dark:bg-slate-900 ' : '' }}">
+                            class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group {{ Route::is('user.room.search') ? 'dark:bg-slate-900 bg-white' : '' }}">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                 stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -218,6 +244,14 @@
                     </li>
                 @endif
             </ul>
+        </div>
+        <div class="">
+            <a href="{{ route('logout') }}"
+                class="flex items-center p-2 hover:bg-gray-100 dark:hover:bg-gray-700 group dark:hover:text-red-400 dark:text-red-300 text-red-700">
+                <div class="size-6"><x-icons.logout /></div>
+
+                <span class="flex-1 ms-3 whitespace-nowrap">Sign out</span>
+            </a>
         </div>
         <div class="px-1 py-2 text-sm dark:text-gray-300 border-t-2 dark:border-gray-600">
             <div class="text-xs">

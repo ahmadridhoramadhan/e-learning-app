@@ -36,7 +36,8 @@ class StudentController extends Controller
         return view('admin.user.detail', [
             'student' => $user,
             'assessmentHistories' => $assessmentHistories,
-            'averageScore' => $averageScore
+            'averageScore' => $averageScore,
+            'totalExpelled' => $user->warnings->where('status', 'declined')->count(),
         ]);
     }
 

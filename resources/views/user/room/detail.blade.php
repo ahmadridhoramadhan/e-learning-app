@@ -97,12 +97,14 @@
                     </div>
                     <div class="flex gap-2">
 
-                        <div class="border-2 border-green-700 text-green-700 relative bg-green-100 flex-auto py-5">
+                        <div
+                            class="border-2 border-green-700 text-green-700 relative bg-green-100 flex-auto py-5 dark:text-green-300 dark:border-green-300 dark:bg-slate-900">
                             <div class="pt-2 pb-1 text-3xl flex justify-center items-center">
                                 {{ $assessmentHistory->right_answer ?? ' ? ' }}</div> <span
                                 class="pb-1 absolute bottom-0 left-0 right-0 text-center">Benar</span>
                         </div>
-                        <div class="border-2 border-red-700 text-red-700 bg-red-100 relative flex-auto py-5">
+                        <div
+                            class="border-2 border-red-700 text-red-700 bg-red-100 relative flex-auto py-5 dark:bg-slate-900 dark:text-red-300 dark:border-red-400">
                             <div class="pt-2 pb-1 text-3xl flex justify-center items-center">
                                 {{ $assessmentHistory->wrong_answer ?? ' ? ' }}</div> <span
                                 class="pb-1 absolute bottom-0 left-0 right-0 text-center">Salah</span>
@@ -126,8 +128,12 @@
                             <form action="{{ route('user.room.join.process', $room->id) }}" method="post">
                                 @csrf
                                 <div class="flex flex-col gap-5 p-5">
-                                    <x-inputs.text id="password" name="password" required :label="'Password'"
-                                        :value="''" :error="$errors->first('password')" />
+                                    @if ($room->password != '')
+                                        <x-inputs.text id="password" name="password" required :label="'Password'"
+                                            :value="''" :error="$errors->first('password')" />
+                                    @else
+                                        <p class="dark:text-white text-center">Apakah Anda Yakin Ingin Mengerjakan</p>
+                                    @endif
                                     <button type="submit"
                                         class="w-full border-2 border-cyan-600 text-cyan-700 bg-cyan-100 py-4 rounded-md shadow-md">Kerjakan</button>
                                 </div>
@@ -135,7 +141,6 @@
                         </div>
                     </div>
                 </dialog>
-
                 @if ($room->is_active)
                     {{-- button --}}
                     <button type="button" @click="insertPassword.showModal(); sessionStorage.clear();"

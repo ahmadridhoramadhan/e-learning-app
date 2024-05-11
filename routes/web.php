@@ -23,46 +23,52 @@ Route::prefix('auth')->group(function () {
 });
 
 // admin
-Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
-    Route::get('/', [TeacherController::class, 'dashboardPage'])->name('admin.dashboard');
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/', [TeacherController::class, 'dashboardPage'])->name('dashboard');
 
     // rooms
-    Route::prefix('rooms')->group(function () {
-        Route::get('/', [RoomController::class, 'allMyRoomPage'])->name('admin.rooms');
-        Route::get('/create', [RoomController::class, 'createPage'])->name('admin.rooms.create');
-        Route::post('/create', [RoomController::class, 'create'])->name('admin.rooms.create.process');
-        Route::delete('/delete/{room}', [RoomController::class, 'delete'])->name('admin.rooms.delete.process');
-        Route::delete('/reset/{room}', [RoomController::class, 'reset'])->name('admin.rooms.reset.process');
-        Route::delete('/reset/questions/{room}', [RoomController::class, 'resetQuestions'])->name('admin.rooms.questions.reset.process');
-        Route::put('/close/{room}', [RoomController::class, 'closeOrOpenProcess'])->name('admin.rooms.closeOrOpen.process');
-        Route::get('/edit/{room}', [RoomController::class, 'edit'])->name('admin.rooms.edit');
-        Route::get('/{room}', [RoomController::class, 'adminDetailPage'])->name('admin.rooms.detail');
-        Route::get('/settings/{room}', [RoomController::class, 'settingsPage'])->name('admin.rooms.settings');
-        Route::post('/settings/{room}', [RoomController::class, 'settings'])->name('admin.rooms.settings.process');
+    Route::prefix('rooms')->name('rooms')->group(function () {
+        Route::get('/', [RoomController::class, 'allMyRoomPage']);
+        Route::get('/create', [RoomController::class, 'createPage'])->name('.create');
+        Route::post('/create', [RoomController::class, 'create'])->name('.create.process');
+        Route::delete('/delete/{room}', [RoomController::class, 'delete'])->name('.delete.process');
+        Route::delete('/reset/{room}', [RoomController::class, 'reset'])->name('.reset.process');
+        Route::delete('/reset/questions/{room}', [RoomController::class, 'resetQuestions'])->name('.questions.reset.process');
+        Route::put('/close/{room}', [RoomController::class, 'closeOrOpenProcess'])->name('.closeOrOpen.process');
+        Route::get('/edit/{room}', [RoomController::class, 'edit'])->name('.edit');
+        Route::get('/{room}', [RoomController::class, 'adminDetailPage'])->name('.detail');
+        Route::get('/settings/{room}', [RoomController::class, 'settingsPage'])->name('.settings');
+        Route::post('/settings/{room}', [RoomController::class, 'settings'])->name('.settings.process');
     });
 
     // users
     Route::prefix('users')->group(function () {
-        Route::get('/', [StudentController::class, 'listAllStudentsPage'])->name('admin.users');
-        Route::get('/{user}', [StudentController::class, 'detail'])->name('admin.users.detail');
-        Route::post('/create/{classroom}', [StudentController::class, 'create'])->name('admin.users.create.process');
-        Route::post('/create/file/{classroom}', [StudentController::class, 'createWithFile'])->name('admin.users.create.file.process');
-        Route::post('/edit/{user}', [StudentController::class, 'edit'])->name('admin.users.edit.process');
-        Route::delete('/{user}', [StudentController::class, 'delete'])->name('admin.users.delete.process');
-        Route::put('/{user}', [StudentController::class, 'resetData'])->name('admin.users.reset.process');
+        Route::get('/', [StudentController::class, 'listAllStudentsPage'])->name('users');
+        Route::get('/{user}', [StudentController::class, 'detail'])->name('users.detail');
+        Route::post('/create/{classroom}', [StudentController::class, 'create'])->name('users.create.process');
+        Route::post('/create/file/{classroom}', [StudentController::class, 'createWithFile'])->name('users.create.file.process');
+        Route::post('/edit/{user}', [StudentController::class, 'edit'])->name('users.edit.process');
+        Route::delete('/{user}', [StudentController::class, 'delete'])->name('users.delete.process');
+        Route::put('/{user}', [StudentController::class, 'resetData'])->name('users.reset.process');
 
-        Route::post('/class/create', [ClassroomController::class, 'create'])->name('admin.class.create.process');
-        Route::delete('/class/delete/{classroom}', [ClassroomController::class, 'delete'])->name('admin.class.delete.process');
-        Route::post('/class/edit/{classroom}', [ClassroomController::class, 'Edit'])->name('admin.class.edit.process');
+        Route::post('/class/create', [ClassroomController::class, 'create'])->name('class.create.process');
+        Route::delete('/class/delete/{classroom}', [ClassroomController::class, 'delete'])->name('class.delete.process');
+        Route::post('/class/edit/{classroom}', [ClassroomController::class, 'Edit'])->name('class.edit.process');
     });
 
-    Route::put('warning/accept/{warning}', [WarningController::class, 'acceptWarning'])->name('admin.student.warning.accept');
-    Route::put('warning/pending/{warning}', [WarningController::class, 'pendingWarning'])->name('admin.student.warning.pending');
-    Route::put('warning/decline/{warning}', [WarningController::class, 'declineWarning'])->name('admin.student.warning.decline');
+    // warning
+    Route::prefix('warning')->group(function () {
+        Route::put('accept/{warning}', [WarningController::class, 'acceptWarning'])->name('student.warning.accept');
+        Route::put('pending/{warning}', [WarningController::class, 'pendingWarning'])->name('student.warning.pending');
+        Route::put('decline/{warning}', [WarningController::class, 'declineWarning'])->name('student.warning.decline');
+    });
 
-    Route::get('/invite/classroom/{room}/{classroom?}', [InvitationController::class, 'inviteClassroomPage'])->name('admin.invite.classroom');
-    Route::post('/invite/classroom/{room}/{classroom?}/process', [InvitationController::class, 'inviteClassroomProcess'])->name('admin.invite.classroom.process');
-    Route::delete('/invite/classroom/{room}/{classroom?}/delete/process', [InvitationController::class, 'deleteInviteClassroomProcess'])->name('admin.invite.classroom.delete.process');
+    // invitation
+    Route::prefix('invite')->name('invite.')->group(function () {
+        Route::get('/classroom/{room}/{classroom?}', [InvitationController::class, 'inviteClassroomPage'])->name('classroom');
+        Route::post('/classroom/{room}/{classroom?}/process', [InvitationController::class, 'inviteClassroomProcess'])->name('classroom.process');
+        Route::delete('/classroom/{room}/{classroom?}/delete/process', [InvitationController::class, 'deleteInviteClassroomProcess'])->name('classroom.delete.process');
+    });
 });
 
 // user

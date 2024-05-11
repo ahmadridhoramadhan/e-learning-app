@@ -32,7 +32,7 @@
             </div>
             <div class="border-2 border-black flex flex-col flex-auto items-center pt-2 shrink-0">
                 <p>Dikeluarkan</p>
-                <p class="text-2xl font-bold flex items-center h-full py-4">99.5</p>
+                <p class="text-2xl font-bold flex items-center h-full py-4">{{ $totalExpelled }}</p>
             </div>
         </div>
     </section>
@@ -46,18 +46,17 @@
             <div class="text-lg">Terbaru</div>
         </div>
 
-        <div class="grid grid-cols-2 gap-6 px-2">
+        <div class="grid sm:grid-cols-3 grid-cols-2 xl:grid-cols-5 justify-items-center  gap-6 px-2">
             {{-- card --}}
             @foreach ($assessmentHistories as $assessmentHistory)
                 <div
-                    class="border-2 flex flex-col items-center w-full aspect-square border-indigo-700 bg-indigo-100 rounded-md shadow-md">
+                    class="border-2 flex flex-col items-center w-full aspect-square border-indigo-700 bg-indigo-100 rounded-md shadow-md max-w-60 dark:bg-indigo-950">
                     <p class="text-xs font-semibold py-2">{{ $assessmentHistory->created_at->format('d F Y') }}</p>
                     <div class="flex-auto flex items-center font-bold text-5xl">{{ $assessmentHistory->score }}</div>
                     <div class="p-2 line-clamp-2 text-sm break-words overflow-hidden">
                         {{ $assessmentHistory->room->name }}</div>
                 </div>
             @endforeach
-
         </div>
     </section>
 

@@ -183,6 +183,7 @@
             <button type="button" x-show="currentIndex == questions.length - 1"
                 class="rounded-full p-1 px-2 border-2 border-cyan-700 bg-cyan-100 text-cyan-800 justify-self-end"
                 @click="submit()">submit?</button>
+            {{-- TODO: confirm before submit --}}
         </section>
     </div>
 
@@ -290,6 +291,7 @@
         }
 
         function submit() {
+            if (!confirm('apakah anda yakin dengan jawaban anda?')) return
             let questions = JSON.parse(sessionStorage.getItem("{{ $title }}"));
             // hapus session questions
             sessionStorage.clear();

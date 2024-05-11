@@ -267,6 +267,8 @@ class RoomController extends Controller
         ]);
     }
 
+
+
     public function delete(Request $request, Room $room)
     {
         foreach ($room->questions as $i => $question) {
@@ -350,12 +352,11 @@ class RoomController extends Controller
     {
         $password = $request->password;
 
-        if ($room->password && $room->password !== $password) {
+        if ($room->password != '' && $room->password !== $password) {
             $validator = Validator::make([], []); // membuat instance validator kosong
             $validator->errors()->add('password', 'Password salah'); // menambahkan pesan error
             return redirect()->back()->withErrors($validator); // mengembalikan user dengan pesan error
         }
-
         // simpan password hash ke session
         $request->session()->put('room_password', $password);
 

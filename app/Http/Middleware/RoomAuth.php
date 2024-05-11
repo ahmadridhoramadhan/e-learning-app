@@ -15,11 +15,11 @@ class RoomAuth
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle($request, Closure $next)
+    public function handle(Request $request, Closure $next)
     {
         // check password
         $room = $request->route('room');
-        if (!(Room::find($room)->first()->password == $request->session()->get('room_password'))) {
+        if (!($room->password == $request->session()->get('room_password')) && $room->password != '') {
             return redirect()->route('user.room.detail', $room->id)->with('error', 'Password salah');
         }
 

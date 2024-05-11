@@ -155,7 +155,8 @@ setInterval(() => {
                     <a href="{{ route('admin.rooms.detail', $roomId) }}" class="flex-auto ml-2">
                         <span class="text-xl">{{ $title }}</span><br>
                     </a>
-                    <a href="{{ route('admin.rooms.settings', request()->segment(4)) }}" class="block w-7 h-7 mr-2">
+                    <a href="{{ route('admin.rooms.settings', request()->segment(4)) }}"
+                        class="block w-7 h-7 mr-2 text-indigo-600">
                         <x-icons.settings />
                     </a>
                 </div>

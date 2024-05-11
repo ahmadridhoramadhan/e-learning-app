@@ -1,5 +1,5 @@
 <x-app-layout :title="$room->name">
-    <section class="lg:flex gap-5 justify-between">
+    <section class="lg:flex gap-5 justify-between items-end">
 
         {{-- leaderboard --}}
         <section id="leaderboard"
@@ -82,7 +82,7 @@
 
     </section>
 
-    <section class="my-8 bg-slate-100 shadow dark:shadow-slate-600 dark:bg-slate-800 rounded p-2">
+    <section class="my-20 bg-slate-100 shadow dark:shadow-slate-600 dark:bg-slate-800 rounded p-2">
         <div class="">
             <div class="bg-white shadow dark:shadow-slate-600 dark:bg-slate-900 rounded p-2 w-fit whitespace-nowrap">
                 meminta izin masuk kembali
@@ -195,13 +195,12 @@
                         </div>
                     </div>
                 @endforeach
-
             </div>
         </div>
     </section>
 
     {{-- undang kelas --}}
-    <section class="my-8 bg-slate-100 shadow dark:shadow-slate-600 dark:bg-slate-800 rounded p-2">
+    <section class="my-20 bg-slate-100 shadow dark:shadow-slate-600 dark:bg-slate-800 rounded p-2">
         <div class="sm:flex space-y-2 sm:space-y-0 items-center gap-2">
             <div class="bg-white shadow dark:shadow-slate-600 dark:bg-slate-900 rounded p-2 w-fit whitespace-nowrap">
                 Undang Kelas
@@ -276,8 +275,8 @@
         <x-cards.delete-in-danger-zone :action="route('admin.rooms.delete.process', $room->id)" :title="'Hapus Room'" :explanation="'Semua data akan di hapus termasuk data siswa yang mengerjakan'" />
     </section>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
         const search = document.getElementById('search');
         const container = document.getElementById('container-livesrarch');
