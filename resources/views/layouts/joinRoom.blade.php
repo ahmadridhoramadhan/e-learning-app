@@ -183,11 +183,17 @@
             <button type="button" x-show="currentIndex == questions.length - 1"
                 class="rounded-full p-1 px-2 border-2 border-cyan-700 bg-cyan-100 text-cyan-800 justify-self-end"
                 @click="submit()">submit?</button>
-            {{-- TODO: confirm before submit --}}
         </section>
     </div>
 
     @if (json_decode($room->settings)->focus ?? false)
+        <script>
+            window.addEventListener('load', function() {
+                alert(
+                    'Kelas ini sedang dalam mode fokus, anda tidak bisa <span class="text-red-400">keluar</span> dari halaman ini. Juga hindara merefresh browser'
+                )
+            });
+        </script>
         <x-alerts.out-while-working :$roomId />
     @endif
 

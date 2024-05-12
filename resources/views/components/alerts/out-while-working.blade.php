@@ -1,6 +1,7 @@
 <dialog id="alertUserLeftTheSite" class="w-full max-w-sm rounded-md shadow-md">
     <div class="flex flex-col items-center px-4 py-4 gap-7 w-full">
-        <p>Meminta izin untuk masuk</p>
+        <p>Anda telah keluar dari browser sebanyak 3 kali atau lebih. room ini menggunakan mode fokus tunggu pemilik
+            room untuk mengizinkan anda masuk lagi</p>
         <div class="select-none">
             <x-loading />
         </div>
@@ -13,6 +14,7 @@
     </div>
 </dialog>
 <script>
+    let totalLeave = 0
     async function leaveRoom() {
         try {
             const res = await fetch('{{ route('user.room.leave.process', [$roomId, auth()->user()->id]) }}', {
@@ -28,11 +30,13 @@
         }
     }
     window.addEventListener('blur', function() {
-        alertUserLeftTheSite.showModal()
+        totalLeave++
+
+        if (totalLeave >= 3) alertUserLeftTheSite.showModal()
 
         // FIXME: ini mungkin tidak bekerja jika user lelet
         setTimeout(() => {
-            leaveRoom()
+            if (totalLeave >= 3) leaveRoom()
         }, 2000);
     });
 </script>
