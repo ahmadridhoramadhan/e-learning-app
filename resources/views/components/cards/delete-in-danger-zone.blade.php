@@ -3,10 +3,11 @@
     <p class="ml-px text-xs text-gray-500 dark:text-gray-200">
         {{ $explanation }}
     </p>
-    <form action="{{ $action }}" method="POST">
+    <form action="{{ $action }}" method="POST"
+        onsubmit="confirm('Apakah Anda yakin ingin {{ $buttonText }}?', event)">
         @csrf
         @method($method)
-        <button type="submit" onclick="return confirm('Apakah Anda yakin ingin {{ $buttonText }}?')"
+        <button type="submit"
             class="block ml-auto mt-1 bg-slate-100 shadow-md rounded text-lg py-2 px-4 font-semibold text-red-700 dark:text-red-500 dark:bg-slate-800">{{ $buttonText }}</button>
     </form>
 </div>

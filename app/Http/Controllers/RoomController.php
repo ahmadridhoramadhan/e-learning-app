@@ -101,6 +101,8 @@ class RoomController extends Controller
             'totalParticipant' => $totalParticipant,
             'totalQuestion' => $room->questions->count(),
             'invitedClassrooms' => $invitedClassrooms,
+            'studentsWhoReceiveWarnings' => $room->studentsWhoReceiveWarnings->where('status', 'pending')->load('fromUser'),
+            'studentsWhoGetBanned' => $room->studentsWhoReceiveWarnings->where('status', 'declined')->load('fromUser')
         ]);
     }
 
@@ -394,6 +396,7 @@ class RoomController extends Controller
 
         // hitung salah, benar, dan score
         foreach ($studentsAnswers as $key => $answer) {
+            // dd($answer->answer_id, $correctAnswers);
             if ($answer->answer_id == $correctAnswers[$key]->answer_id) {
                 $score++;
             } else {

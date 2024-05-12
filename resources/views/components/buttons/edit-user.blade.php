@@ -11,11 +11,13 @@
             <form action="{{ route('admin.users.edit.process', $student->id) }}" method="POST"
                 class="w-full flex flex-col gap-3">
                 @csrf
-                <x-inputs.text :label="'Nama'" :name="'name'" :error="''" :value="$student->name" required />
-                <x-inputs.text :label="'Email'" :name="'email'" :type="'email'" :error="''" :value="$student->email"
+                <x-inputs.text :label="'Nama'" :name="'name'" :error="''" :value="$student->name" :id="'name-' . $student->id"
                     required />
+                <x-inputs.text :label="'Email'" :name="'email'" :type="'email'" :error="''" :value="$student->email"
+                    :id="'email-' . $student->id" required />
                 <div>
-                    <x-inputs.text :label="'Password'" :name="'password'" :error="''" :value="$student->password" />
+                    <x-inputs.text :label="'Password'" :name="'password'" :error="''" :value="$student->password"
+                        :id="'password-' . $student->id" />
                     <p class="text-xs">Generate password otomatis ketika tidak di isi</p>
                 </div>
 

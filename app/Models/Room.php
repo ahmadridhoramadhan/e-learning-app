@@ -49,4 +49,9 @@ class Room extends Model
         $averageScore = $this->assessmentHistories->avg('score');
         return $averageScore ? number_format($averageScore, 2) : 0;
     }
+
+    public function studentsWhoReceiveWarnings()
+    {
+        return $this->hasMany(Warning::class);
+    }
 }

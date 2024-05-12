@@ -82,122 +82,106 @@
 
     </section>
 
-    <section class="my-20 bg-slate-100 shadow dark:shadow-slate-600 dark:bg-slate-800 rounded p-2">
-        <div class="">
-            <div class="bg-white shadow dark:shadow-slate-600 dark:bg-slate-900 rounded p-2 w-fit whitespace-nowrap">
-                meminta izin masuk kembali
+    @if ($studentsWhoReceiveWarnings->isNotEmpty())
+        <section class="my-20 bg-slate-100 shadow dark:shadow-slate-600 dark:bg-slate-800 rounded p-2">
+            <div class="">
+                <div
+                    class="bg-white shadow dark:shadow-slate-600 dark:bg-slate-900 rounded p-2 w-fit whitespace-nowrap">
+                    meminta izin masuk kembali
+                </div>
+                <p class="text-gray-700 dark:text-gray-400 text-sm mt-2">orang yang muncul disini adalah orang yang saat
+                    mengejakan mereka ke luar dari browser atau situs ini</p>
             </div>
-            <p class="text-gray-700 dark:text-gray-400 text-sm mt-2">orang yang muncul disini adalah orang yang saat
-                mengejakan mereka ke luar dari browser atau situs ini</p>
-        </div>
-
-
-        <div class="mt-5 mb-2 gap-4 px-2 divide-y-2 divide-gray-700 dark:divide-gray-400">
-            {{-- card --}}
-            @foreach (auth()->user()->studentWarnings()->where('status', 'pending')->get() as $warning)
-                <div class="flex py-2 justify-between items-center w-full">
-                    <div class="flex gap-2 pl-2 items-center overflow-auto">
-                        <div class="size-7 flex-shrink-0">
+            <div
+                class="mt-5 mb-2 gap-4 px-2 divide-y-2 divide-gray-700 dark:divide-gray-400 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 justify-items-center py-4">
+                {{-- card --}}
+                @foreach ($studentsWhoReceiveWarnings as $warning)
+                    <div
+                        class="w-full max-w-64 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 overflow-hidden">
+                        <div class="flex flex-col items-center py-5">
                             @if ($warning->fromUser->profile_picture_url)
                                 <img src="{{ $warning->fromUser->profile_picture_url }}"
-                                    class="rounded-full shadow dark:shadow-slate-600" alt="">
+                                    class="w-24 h-24 mb-3 rounded-full shadow-lg" alt="">
                             @else
                                 <x-icons.person />
                             @endif
-                        </div>
-                        <div class="flex-auto overflow-auto flex-grow-0">
-                            <p class="break-all truncate text-xl overflow-auto">{{ $warning->fromUser->name }}</p>
-                            <div class="text-xs dark:text-gray-400 text-gray-700 -mt-1">
-                                {{ $warning->fromUser->fromClassroom->name }}
+                            <h5 class="mb-1 text-xl font-medium text-gray-900 dark:text-white text-center line-clamp-2">
+                                {{ $warning->fromUser->name }}</h5>
+                            <span
+                                class="text-sm text-gray-500 dark:text-gray-400">{{ $warning->fromUser->fromClassroom->name }}</span>
+                            <div class="flex mt-4 md:mt-6 gap-2">
+                                <form action="{{ route('admin.student.warning.accept', $warning->id) }}" method="POST"
+                                    onsubmit="confirm('Apakah anda yakin?', event)">
+                                    @csrf
+                                    @method('PUT')
+                                    <button type="submit"
+                                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white w-full text-start bg-indigo-800 rounded-md">
+                                        izinkan
+                                    </button>
+                                </form>
+                                <form action="{{ route('admin.student.warning.decline', $warning->id) }}"
+                                    method="POST"
+                                    onsubmit="confirm('Siswa tidak bisa lagi masuk ke room ini. Apakah anda yakin?', event)">
+                                    @csrf
+                                    @method('PUT')
+                                    <button type="submit"
+                                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white w-full text-start rounded-md">
+                                        keluarkan
+                                    </button>
+                                </form>
                             </div>
-                        </div>
-                    </div>
-
-                    <div class="flex mx-1 gap-2">
-                        <button data-dropdown-toggle="dropdownDots{{ $warning->id }}"
-                            data-dropdown-placement="bottom-start"
-                            class="flex-shrink-0 inline-flex self-center items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:bg-slate-900 dark:hover:bg-gray-800 dark:focus:ring-gray-600"
-                            type="button">
-                            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
-                                xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 4 15">
-                                <path
-                                    d="M3.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 6.041a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 5.959a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z" />
-                            </svg>
-                        </button>
-                        <div id="dropdownDots{{ $warning->id }}"
-                            class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-40 dark:bg-gray-700 dark:divide-gray-600">
-                            <ul class="py-2 text-sm text-gray-700 dark:text-gray-200"
-                                aria-labelledby="dropdownMenuIconButton">
-                                <li>
-                                    <form action="{{ route('admin.student.warning.accept', $warning->id) }}"
-                                        method="POST" onsubmit="return confirm('Apakah anda yakin?')">
-                                        @csrf
-                                        @method('PUT')
-                                        <button type="submit"
-                                            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white w-full text-start">
-                                            izinkan
-                                        </button>
-                                    </form>
-                                </li>
-                                <li>
-                                    <form action="{{ route('admin.student.warning.decline', $warning->id) }}"
-                                        method="POST"
-                                        onsubmit="return confirm('Siswa tidak bisa lagi masuk ke room ini. Apakah anda yakin?')">
-                                        @csrf
-                                        @method('PUT')
-                                        <button type="submit"
-                                            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white w-full text-start">
-                                            keluarkan
-                                        </button>
-                                    </form>
-
-                                </li>
-
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            @endforeach
-        </div>
-        <div class="border-t border-cyan-900 dark:border-cyan-400">
-            <p class="text-center mt-3">siswa yang dikeluarkan</p>
-            <div class="mb-2 gap-4 px-2 divide-y-2 divide-gray-700 dark:divide-gray-400 opacity-50">
-                {{-- card --}}
-                @foreach (auth()->user()->studentWarnings()->where('status', 'declined')->get() as $warning)
-                    <div class="flex py-2 justify-between items-center w-full">
-                        <div class="flex gap-2 pl-2 items-center overflow-auto">
-                            <div class="size-7 flex-shrink-0">
-                                @if ($warning->fromUser->profile_picture_url)
-                                    <img src="{{ $warning->fromUser->profile_picture_url }}"
-                                        class="rounded-full shadow dark:shadow-slate-600" alt="">
-                                @else
-                                    <x-icons.person />
-                                @endif
-                            </div>
-                            <div class="flex-auto overflow-auto flex-grow-0">
-                                <p class="break-all truncate text-xl overflow-auto">{{ $warning->fromUser->name }}</p>
-                                <div class="text-xs dark:text-gray-400 text-gray-700 -mt-1">
-                                    {{ $warning->fromUser->fromClassroom->name }}
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="flex mx-1 gap-2">
-                            <form action="{{ route('admin.student.warning.pending', $warning->id) }}" method="POST"
-                                onsubmit="return confirm('Apakah anda yakin?')">
-                                @csrf
-                                @method('PUT')
-                                <button type="submit"
-                                    class="p-1 px-2 dark:border-cyan-300 dark:bg-cyan-900 border rounded-lg">
-                                    kembalikan
-                                </button>
-                            </form>
                         </div>
                     </div>
                 @endforeach
             </div>
-        </div>
-    </section>
+        </section>
+    @endif
+    @if ($studentsWhoGetBanned->isNotEmpty())
+        <section class="my-20 bg-slate-100 shadow dark:shadow-slate-600 dark:bg-slate-800 rounded p-2">
+            <div class="">
+                <div
+                    class="bg-white shadow dark:shadow-slate-600 dark:bg-slate-900 rounded p-2 w-fit whitespace-nowrap">
+                    list siswa yang di keluarkan
+                </div>
+                <p class="text-gray-700 dark:text-gray-400 text-sm mt-2">orang yang muncul disini adalah orang yang
+                    sudah
+                    tidak di izinkan untuk mengerjakan room ini</p>
+            </div>
+            <div
+                class="mt-5 mb-2 gap-4 px-2 divide-y-2 divide-gray-700 dark:divide-gray-400 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 justify-items-center py-4 opacity-40">
+                {{-- card --}}
+                @foreach ($studentsWhoGetBanned as $warning)
+                    <div
+                        class="w-full max-w-64 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 overflow-hidden">
+                        <div class="flex flex-col items-center py-5">
+                            @if ($warning->fromUser->profile_picture_url)
+                                <img src="{{ $warning->fromUser->profile_picture_url }}"
+                                    class="w-24 h-24 mb-3 rounded-full shadow-lg" alt="">
+                            @else
+                                <x-icons.person />
+                            @endif
+                            <h5 class="mb-1 text-xl font-medium text-gray-900 dark:text-white text-center line-clamp-2">
+                                {{ $warning->fromUser->name }}</h5>
+                            <span
+                                class="text-sm text-gray-500 dark:text-gray-400">{{ $warning->fromUser->fromClassroom->name }}</span>
+                            <div class="flex mt-4 md:mt-6 gap-2">
+                                <form action="{{ route('admin.student.warning.pending', $warning->id) }}"
+                                    method="POST" onsubmit="confirm('Apakah anda yakin?', event)">
+                                    @csrf
+                                    @method('PUT')
+                                    <button type="submit"
+                                        class="p-1 px-2 dark:border-gray-300 dark:bg-gray-900 border rounded-lg">
+                                        kembalikan
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </section>
+    @endif
+
 
     {{-- undang kelas --}}
     <section class="my-20 bg-slate-100 shadow dark:shadow-slate-600 dark:bg-slate-800 rounded p-2">
@@ -244,7 +228,7 @@
                     <div class="flex mx-1 gap-1">
                         <form
                             action="{{ route('admin.invite.classroom.delete.process', [$room->id, $classroom->id]) }}"
-                            method="POST" onsubmit="return confirm('apakah anda yakin?')">
+                            method="POST" onsubmit="confirm('apakah anda yakin?', event)">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="dark:text-red-500 text-red-600">
@@ -308,5 +292,4 @@
             }
         });
     </script>
-
 </x-app-layout>

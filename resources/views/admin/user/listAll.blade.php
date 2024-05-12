@@ -2,7 +2,8 @@
     <div x-init class="flex flex-col gap-10">
         @foreach ($classrooms as $classroom)
             <div class="dark:bg-slate-800 rounded-md shadow-md dark:shadow-slate-500 p-5 bg-slate-50 relative">
-                <form action="{{ route('admin.class.delete.process', $classroom->id) }}" method="POST">
+                <form action="{{ route('admin.class.delete.process', $classroom->id) }}" method="POST"
+                    onsubmit="confirm('apakah anda yakin ingin menghapus kelas ini', event)">
                     @csrf
                     @method('DELETE')
                     <button type="submit"
@@ -14,7 +15,7 @@
                     id="formEditClass{{ $classroom->id }}" method="post">
                     @csrf
                     <input type="text" name="name" value="{{ $classroom->name }}"
-                        onblur="if(confirm('Apakah Anda yakin ingin mengganti nama kelas?')) {document.getElementById('formEditClass{{ $classroom->id }}').submit()}"
+                        onblur="confirm('Apakah Anda yakin ingin mengganti nama kelas?', null, (result) => {if(result) document.getElementById('formEditClass{{ $classroom->id }}').submit();})"
                         class="text-3xl font-semibold w-full focus:border-b-2 border-black outline-none bg-transparent border-0 ring-0 text-center mb-7">
                 </form>
                 <div class="grid gap-5 place-items-center xl:grid-cols-5 grid-cols-2 lg:grid-cols-3">
@@ -48,7 +49,7 @@
                                         <li>
                                             <form action="{{ route('admin.users.delete.process', $student->id) }}"
                                                 method="post"
-                                                onsubmit="return confirm('apakah anda yakin ingin menghapus siswa ini?')">
+                                                onsubmit="confirm('apakah anda yakin ingin menghapus siswa ini?', event)">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit"
@@ -135,6 +136,5 @@
                 </div>
             </div>
         </div>
-
     </div>
 </x-app-layout>

@@ -291,28 +291,35 @@
         }
 
         function submit() {
-            if (!confirm('apakah anda yakin dengan jawaban anda?')) return
-            let questions = JSON.parse(sessionStorage.getItem("{{ $title }}"));
-            // hapus session questions
-            sessionStorage.clear();
+            confirm('apakah anda yakin dengan jawaban anda?', null, (result) => {
+                if (result) {
+                    let questions = JSON.parse(sessionStorage.getItem("{{ $title }}"));
+                    // hapus session questions
+                    sessionStorage.clear();
 
-            let notAnswered = false;
+                    let notAnswered = false;
 
-            let data = [];
-            questions.forEach((question, index) => {
-                if (question.selected == null) {
-                    alert(`Soal ke-${index + 1} belum dijawab`);
-                    notAnswered = true;
+                    let data = [];
+                    questions.forEach((question, index) => {
+                        if (question.selected == null) {
+                            notAnswered = true;
+                        }
+                        data.push({
+                            question_id: question.id,
+                            answer_id: question.selected
+                        });
+                    });
+
+                    if (notAnswered) {
+                        alert('Anda belum menjawab semua pertanyaan');
+                        return;
+                    };
+
+                    document.getElementById('data').value = JSON.stringify(data);
+                    document.getElementById('submitForm').submit();
                 }
-                data.push({
-                    question_id: question.id,
-                    answer_id: question.selected
-                });
-            });
+            })
 
-            if (notAnswered) return;
-            document.getElementById('data').value = JSON.stringify(data);
-            document.getElementById('submitForm').submit();
         }
 
         function startCountdown(minutes) {

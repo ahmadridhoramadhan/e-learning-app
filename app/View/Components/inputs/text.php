@@ -21,7 +21,7 @@ class text extends Component
     public function __construct($name, $label, $type = 'text', $error = null, $value = null, $id = null)
     {
         $this->name = $name;
-        $this->id = $name;
+        $this->id = $id;
         $this->error = $error;
         $this->label = $label;
         $this->type = in_array($type, ['email', 'text', 'password']) ? $type : 'text';
